@@ -1,22 +1,20 @@
 <template>
-  <Header></Header>
   <router-view />
   <Footer></Footer>
 </template>
 
 <style lang="scss">
-
+  #app{
+    height: 100%;
+  }
 </style>
 
 <script>
+import Footer from "./components/Footer/index.vue";
 
-  import Header from "./components/public/Header/index.vue"
-  import Footer from "./components/public/Footer/index.vue"
-
-  export default {
-    components: {
-      Header,
-      Footer
-    }
-  }
+export default {
+  components: {
+    Footer,
+  },
+};
 </script>
