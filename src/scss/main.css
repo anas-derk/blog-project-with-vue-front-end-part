@@ -1,0 +1,16 @@
+* {
+  font-family: 'Tajawal', sans-serif;
+}
+
+:root {
+  --one-color: #EEE;
+  --two-color: #666;
+}
+
+body {
+  height: 4000px;
+}
+
+a {
+  text-decoration: none;
+}
