@@ -4,7 +4,7 @@
     <!-- Start Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
       <!-- Start Container -->
-      <div class="container-fluid">
+      <div class="container">
         <a class="navbar-brand" href="#">مدونة الكترونية</a>
         <button
           class="navbar-toggler"

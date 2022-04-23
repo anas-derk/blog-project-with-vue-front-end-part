@@ -3,7 +3,7 @@
 }
 
 :root {
-  --one-color: #EEE;
+  --one-color: #CCC;
   --two-color: #666;
 }
 
@@ -13,4 +13,37 @@ body {
 
 a {
   text-decoration: none;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+.last-blogs .card .card-title,
+.last-comments .card .card-title {
+  margin: 0;
+}
+
+.last-blogs .card .list-group:first-child,
+.last-comments .card .list-group:first-child {
+  border-top: none;
+}
+
+.last-blogs .card .list-group .list-group-item,
+.last-comments .card .list-group .list-group-item {
+  border-width: 1.2px;
+}
+
+.last-blogs .card .list-group .list-group-item:first-child,
+.last-comments .card .list-group .list-group-item:first-child {
+  border-top: none;
+}
+
+.border-style {
+  border: 2px dashed var(--one-color);
+}
+
+.border-radius-3 {
+  border-radius: 3px;
 }

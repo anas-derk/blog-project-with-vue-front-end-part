@@ -3,7 +3,7 @@
 }
 
 :root{
-    --one-color: #EEE;
+    --one-color: #CCC;
     --two-color: #666;
 }
 
@@ -13,4 +13,37 @@ body{
 
 a{
     text-decoration: none
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+}
+
+.last-blogs,
+.last-comments{
+    .card{
+      .card-title{
+        margin: 0;
+      }
+      .list-group{
+        &:first-child{
+            border-top: none;
+        }
+        .list-group-item{
+            border-width: 1.2px;
+            &:first-child{
+                border-top: none;
+            }
+        }
+      }
+    }
+}
+
+.border-style{
+    border: 2px dashed var(--one-color);
+}
+
+.border-radius-3{
+    border-radius: 3px;
 }

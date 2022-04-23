@@ -2,7 +2,7 @@
   <!-- Start Footer -->
   <footer class="footer-section text-center pt-4 pb-3">
     <!-- Start Container -->
-    <div class="container-fluid">
+    <div class="container">
       <!-- Start Grid System -->
       <div class="row">
         <!-- Start Column -->
