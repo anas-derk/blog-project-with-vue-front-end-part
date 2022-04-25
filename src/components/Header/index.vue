@@ -46,7 +46,7 @@
                 </li>
                 <li>
                   <a class="dropdown-item" href="#">دورة جانغو</a>
-                  </li>
+                </li>
                 <li>
                   <a class="dropdown-item" href="#">دورة نظام إدارة التعلم</a>
                 </li>
@@ -54,7 +54,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                to="/about"
+                to="/sign-up"
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
@@ -76,7 +76,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                to="/"
+                to="/sign-up"
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
@@ -95,19 +95,27 @@
 </template>
 
 <style lang="scss" scoped>
-  .header-section{
-    .navbar {
-      * a{
-          color: #FFF;
-      }
+.header-section {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1;
+  .navbar {
+    * a {
+      color: #fff;
+    }
+    .navbar-collapse {
+      margin-right: 20px;
       .navbar-nav {
-        .dropdown-item{
+        .dropdown-item {
           text-align: right;
           color: #000;
         }
       }
     }
   }
+}
 </style>
 
 <script>

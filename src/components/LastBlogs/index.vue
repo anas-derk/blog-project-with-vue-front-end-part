@@ -1,6 +1,6 @@
 <template>
   <!-- Start Last Blogs -->
-  <div class="last-blogs mb-4">
+  <aside class="last-blogs mb-4">
     <div class="card">
       <h5 class="card-title text-center bg-secondary text-white pt-3 pb-3">آخر التدوينات</h5>
       <ul class="list-group list-group-flush">
@@ -11,7 +11,7 @@
         <li class="list-group-item">التدوينة الخامسة</li>
       </ul>
     </div>
-  </div>
+  </aside>
   <!-- End Last Blogs -->
 </template>
 
