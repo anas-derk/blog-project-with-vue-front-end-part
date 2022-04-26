@@ -2,7 +2,7 @@
   <Header />
   <!-- Start Home Section -->
   <section class="home">
-    <h1>كل التدوينات :</h1>
+    <h3>كل التدوينات :</h3>
     <hr />
     <!-- Start Blog -->
     <div class="blog p-3 border-style border-radius-3">

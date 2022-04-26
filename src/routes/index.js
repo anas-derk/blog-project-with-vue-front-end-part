@@ -13,6 +13,12 @@ const routes = [
     },
 
     {
+        name: "تسجيل الدخول",
+        path: "/login",
+        component: () => import("../views/Authentication/Signup/index.vue")
+    },
+
+    {
         path: "/:catchAll(.*)",
         component: () => import("../views/PageNotFound/index.vue")
     }
