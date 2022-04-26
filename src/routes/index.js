@@ -15,7 +15,7 @@ const routes = [
     {
         name: "تسجيل الدخول",
         path: "/login",
-        component: () => import("../views/Authentication/Signup/index.vue")
+        component: () => import("../views/Authentication/Login/index.vue")
     },
 
     {

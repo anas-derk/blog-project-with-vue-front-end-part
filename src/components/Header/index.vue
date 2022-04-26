@@ -66,7 +66,7 @@
           <ul class="navbar-nav" style="margin-right: auto">
             <li class="nav-item">
               <router-link
-                to="/"
+                to="/login"
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
