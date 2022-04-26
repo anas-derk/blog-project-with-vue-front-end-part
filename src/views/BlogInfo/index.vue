@@ -1,8 +1,8 @@
 <template>
   <Header />
-  <!-- Start Home Section -->
-  <section class="home">
-    <h3>كل التدوينات :</h3>
+  <!-- Start Blog Details Section -->
+  <section class="blog-details">
+    <h3>معلومات التدوينة :</h3>
     <hr />
     <!-- Start Blog -->
     <div class="blog p-3 border-style border-radius-3">
@@ -27,9 +27,7 @@
       </div>
       <!-- Start Blog Details -->
       <div class="blog-details">
-        <h4 class="blog-title">
-          <router-link to="/blog/1">عنوان التدوينة</router-link>
-        </h4>
+        <h4 class="blog-title">عنوان التدوينة</h4>
         <p class="blog-content">محتوى التدوينة</p>
         <h6>اسم الكاتب :</h6>
       </div>
@@ -52,7 +50,7 @@
 <script>
 import Header from "@/components/Header";
 export default {
-  name: "Home",
+  name: "BlogDetails",
   components: {
     Header,
   },

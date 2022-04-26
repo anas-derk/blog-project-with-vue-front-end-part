@@ -19,6 +19,12 @@ const routes = [
     },
 
     {
+        name: "تفاصيل المدونة",
+        path: "/blog/:id",
+        component: () => import("../views/BlogInfo/index.vue")
+    },
+
+    {
         path: "/:catchAll(.*)",
         component: () => import("../views/PageNotFound/index.vue")
     }
