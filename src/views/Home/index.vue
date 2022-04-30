@@ -4,6 +4,9 @@
   <section class="home">
     <h3>كل التدوينات :</h3>
     <hr />
+    <p class="alert alert-success" v-if="successMessage">
+      {{ successMessage }}
+    </p>
     <!-- Start Blog -->
     <div class="blog p-3 border-style border-radius-3">
       <!-- Start Author Img And Post Date Time Box -->
@@ -53,6 +56,17 @@
 import Header from "@/components/Header";
 export default {
   name: "Home",
+  data() {
+    return {
+      successMessage: "",
+    };
+  },
+  mounted() {
+    this.successMessage = this.$route.params.successMessage;
+    setTimeout(() => {
+      this.successMessage = "";
+    }, 6000);
+  },
   components: {
     Header,
   },
