@@ -49,7 +49,7 @@
 <script>
 import Header from "@/components/Header/index.vue";
 import axios from "axios";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Login",
@@ -64,10 +64,18 @@ export default {
   components: {
     Header,
   },
+  mounted() {
+    let userInfo = this.userInfo;
+    if(userInfo) {
+      this.redirectToPage("/");
+    }
+  },
   computed: {
-    ...mapGetters(["base_api_url"]),
+    ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
+    ...mapMutations(["setUserInfo"]),
+    ...mapActions(["redirectToPage"]),
     login() {
       this.waitMessage =
         "الرجاء الانتظار قليلاً ريثما يتم التحقق وتسجيل الدخول ...";
@@ -85,10 +93,8 @@ export default {
                 this.errorMessage = "";
               }, 4000);
             } else {
-              this.$router.push({
-                name: "الصفحة الرئيسية",
-                params: { userInfo: result },
-              });
+              this.setUserInfo(result);
+              this.redirectToPage("/");
             }
           }, 2000);
         })
