@@ -70,6 +70,7 @@
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
+                v-if="!userData"
               >
                 تسجيل الدخول
               </router-link>
@@ -80,9 +81,43 @@
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
+                v-if="!userData"
               >
                 إنشاء حساب جديد
               </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                to="/sign-up"
+                class="nav-link"
+                aria-current="page"
+                exact-active-class
+                v-if="userData"
+              >
+                تدوينة جديدة
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link
+                to="/sign-up"
+                class="nav-link"
+                aria-current="page"
+                exact-active-class
+                v-if="userData"
+              >
+                الملف الشخصي
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <button
+                class="nav-link btn btn-danger text-white"
+                aria-current="page"
+                exact-active-class
+                @click="logout()"
+                v-if="userData"
+              >
+                تسجيل الخروج
+              </button>
             </li>
           </ul>
         </div>
@@ -119,7 +154,30 @@
 </style>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from "vuex";
+
 export default {
   name: "Header",
+  data() {
+    return {
+      userData: "",
+    };
+  },
+  mounted() {
+    this.userData = this.userInfo;
+  },
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
+  methods: {
+    ...mapMutations(["clearUserInfo"]),
+    ...mapActions(["redirectToPage"]),
+    logout() {
+      // clear user info
+      this.clearUserInfo();
+      // redirect to home page
+      this.redirectToPage("/");
+    },
+  },
 };
 </script>

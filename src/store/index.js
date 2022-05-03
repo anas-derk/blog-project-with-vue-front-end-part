@@ -23,6 +23,12 @@ export default createStore({
       localStorage.setItem("user-info", JSON.stringify(newUserInfo));
       // alter user info in state for vuex
       state.userInfo = localStorage.getItem("user-info");
+    },
+    clearUserInfo(state) {
+      // clear user info from local storage
+      localStorage.removeItem("user-info");
+      // clear user info from state in vuex
+      state.userInfo = null;
     }
   },
   actions: {
