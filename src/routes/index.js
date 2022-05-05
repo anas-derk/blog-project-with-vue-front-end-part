@@ -25,10 +25,16 @@ const routes = [
     },
 
     {
+        name: "الملف الشخصي",
+        path: "/users/profile/:userId",
+        component: () => import("../views/User/Profile/index.vue")
+    },
+
+    {
         path: "/:catchAll(.*)",
         component: () => import("../views/PageNotFound/index.vue")
     }
 
-]
+];
 
-export default routes
+export default routes;

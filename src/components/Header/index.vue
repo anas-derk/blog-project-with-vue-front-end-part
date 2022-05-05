@@ -99,7 +99,10 @@
             </li>
             <li class="nav-item">
               <router-link
-                to="/sign-up"
+                :to="{
+                  name: 'الملف الشخصي',
+                  params: { userId: userId }
+                }"
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
@@ -161,10 +164,12 @@ export default {
   data() {
     return {
       userData: "",
+      userId: null,
     };
   },
   mounted() {
     this.userData = this.userInfo;
+    this.userId = this.userData._id;
   },
   computed: {
     ...mapGetters(["userInfo"]),
