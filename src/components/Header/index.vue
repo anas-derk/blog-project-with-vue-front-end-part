@@ -101,7 +101,7 @@
               <router-link
                 :to="{
                   name: 'الملف الشخصي',
-                  params: { userId: userId }
+                  params: { userId: userId },
                 }"
                 class="nav-link"
                 aria-current="page"
@@ -168,8 +168,10 @@ export default {
     };
   },
   mounted() {
-    this.userData = this.userInfo;
-    this.userId = this.userData._id;
+    if (this.userInfo) {
+      this.userData = this.userInfo;
+      this.userId = this.userData._id;
+    }
   },
   computed: {
     ...mapGetters(["userInfo"]),
@@ -181,7 +183,7 @@ export default {
       // clear user info
       this.clearUserInfo();
       // redirect to home page
-      this.redirectToPage("/");
+      this.redirectToPage("/login");
     },
   },
 };
