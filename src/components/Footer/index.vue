@@ -22,7 +22,7 @@
             <!-- End Info Box -->
           </div>
         </div>
-        <!-- Start Column -->
+        <!-- End Column -->
         <!-- Start Column -->
         <div class="col-md">
           <div class="personal-info p-3 bg-white details-box">
@@ -40,7 +40,7 @@
             <!-- End Info Box -->
           </div>
         </div>
-        <!-- Start Column -->
+        <!-- End Column -->
         <!-- Start Column -->
         <div class="col-md">
           <div class="personal-info p-3 bg-white details-box">
@@ -58,7 +58,7 @@
             <!-- End Info Box -->
           </div>
         </div>
-        <!-- Start Column -->
+        <!-- End Column -->
       </div>
       <!-- End Grid System -->
       <!-- Start Copyright Part -->

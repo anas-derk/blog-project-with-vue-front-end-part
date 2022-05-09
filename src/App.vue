@@ -1,7 +1,7 @@
 <template>
-  <section class="home pt-4 pb-4">
+  <div class="page-content">
     <!-- Start Container -->
-    <div class="container">
+    <div class="container pt-4 pb-4">
       <!-- Start Grid System -->
       <div class="row">
         <!-- Start Column -->
@@ -23,21 +23,24 @@
       <!-- End Grid System -->
     </div>
     <!-- End Container -->
-  </section>
-  <Footer></Footer>
+    <Footer />
+  </div>
 </template>
 
 <style lang="scss">
 #app {
   height: 100%;
-}
-.last-blogs-comments-box {
-  padding-top: 60px;
+  .page-content {
+    height: inherit;
+    .last-blogs-comments-box {
+      padding-top: 60px;
+    }
+  }
 }
 </style>
 
 <script>
-import Footer from "./components/Footer/index.vue";
+import Footer from "@/components/Footer/index.vue";
 import LastBlogs from "@/components/LastBlogs/index";
 import LastComments from "@/components/LastComments/index";
 

@@ -1,7 +1,7 @@
 <template>
-  <Header />
   <!-- Start Blog Details Section -->
-  <section class="blog-details">
+  <div class="blog-details">
+    <Header />
     <h3>معلومات التدوينة :</h3>
     <hr />
     <!-- Start Blog -->
@@ -34,8 +34,8 @@
       <!-- End Blog Details -->
     </div>
     <!-- End Blog -->
-  </section>
-  <!-- End Home Page -->
+  </div>
+  <!-- End Blog Details Section -->
 </template>
 
 <style lang="scss" scoped>

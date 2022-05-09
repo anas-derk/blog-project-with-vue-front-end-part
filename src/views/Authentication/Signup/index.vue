@@ -1,7 +1,7 @@
 <template>
-  <Header />
   <!-- Start Signup -->
-  <section class="sign-up">
+  <div class="sign-up">
+    <Header />
     <h3>إنشاء حساب جديد:</h3>
     <hr />
     <form
@@ -82,7 +82,7 @@
         <router-link to="/login"> تسجيل الدخول </router-link>
       </p>
     </form>
-  </section>
+  </div>
   <!-- End Signup -->
 </template>
 

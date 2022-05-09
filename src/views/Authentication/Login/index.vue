@@ -1,7 +1,7 @@
 <template>
-  <Header />
   <!-- Start Login -->
-  <section class="login">
+  <div class="login">
+    <Header />
     <h3>تسجيل الدخول:</h3>
     <hr />
     <form class="login-form border-style p-3" @submit.prevent="login()">
@@ -42,7 +42,7 @@
         <router-link to="/sign-up"> إنشاء حساب جديد </router-link>
       </p>
     </form>
-  </section>
+  </div>
   <!-- End Login -->
 </template>
 

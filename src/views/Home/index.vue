@@ -1,7 +1,7 @@
 <template>
-  <Header />
-  <!-- Start Home Section -->
-  <section class="home">
+  <!-- Start Home -->
+  <div class="home">
+    <Header />
     <h3>كل التدوينات :</h3>
     <hr />
     <p class="alert alert-success" v-if="successMessage">
@@ -39,8 +39,8 @@
       <!-- End Blog Details -->
     </div>
     <!-- End Blog -->
-  </section>
-  <!-- End Home Page -->
+  </div>
+  <!-- End Home -->
 </template>
 
 <style lang="scss" scoped>

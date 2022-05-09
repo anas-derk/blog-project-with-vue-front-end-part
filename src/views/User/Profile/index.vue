@@ -1,7 +1,7 @@
 <template>
-  <Header />
-  <!-- Start Profile Section -->
-  <section class="profile">
+  <!-- Start Profile -->
+  <div class="profile">
+    <Header />
     <h3>أهلاً بك {{ userData.userName }} في صفحة الملف الشخصي الخاصة بك :</h3>
     <hr />
     <!-- Start Profile Info -->
@@ -82,8 +82,8 @@
       <span style="margin: 0 20px">صفحة 1 من 10</span>
       <button class="btn btn-secondary">السابق</button>
     </div>
-  </section>
-  <!-- End Profile Section -->
+  </div>
+  <!-- End Profile -->
 </template>
 
 <script>
