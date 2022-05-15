@@ -22,7 +22,11 @@
               margin-bottom: 20px;
             "
           ></i>
-          <button class="btn btn-danger">تحرير</button>
+          <router-link
+            :to="{ name: 'تحرير الملف الشخصي', userId: userData._id }"
+            class="btn btn-danger"
+            >تحرير</router-link
+          >
         </div>
         <!-- End Column -->
         <!-- Start Column -->

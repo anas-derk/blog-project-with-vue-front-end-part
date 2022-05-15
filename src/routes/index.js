@@ -31,6 +31,12 @@ const routes = [
     },
 
     {
+        name: "تحرير الملف الشخصي",
+        path: "/users/profile/edit-profile/:userId",
+        component: () => import("../views/User/EditProfile/index.vue")
+    },
+
+    {
         path: "/:catchAll(.*)",
         component: () => import("../views/PageNotFound/index.vue")
     }
