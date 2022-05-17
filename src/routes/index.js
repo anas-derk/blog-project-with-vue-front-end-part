@@ -25,6 +25,12 @@ const routes = [
     },
 
     {
+        name: "إضافة تدوينة جديدة",
+        path: "/blog/add-new-blog",
+        component: () => import("../views/AddNewBlog/index.vue")
+    },
+
+    {
         name: "الملف الشخصي",
         path: "/users/profile/:userId",
         component: () => import("../views/User/Profile/index.vue")

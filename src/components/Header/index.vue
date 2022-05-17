@@ -88,7 +88,7 @@
             </li>
             <li class="nav-item">
               <router-link
-                to="/sign-up"
+                to="/blog/add-new-blog"
                 class="nav-link"
                 aria-current="page"
                 exact-active-class
