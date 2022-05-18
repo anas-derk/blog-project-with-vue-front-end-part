@@ -31,6 +31,18 @@ const routes = [
     },
 
     {
+        name: "تحرير التدوينة",
+        path: "/blog/:id/edit",
+        component: () => import("../views/EditBlog/index.vue")
+    },
+
+    {
+        name: "حذف التدوينة",
+        path: "/blog/:id/delete",
+        component: () => import("../views/DeleteBlog/index.vue")
+    },
+
+    {
         name: "الملف الشخصي",
         path: "/users/profile/:userId",
         component: () => import("../views/User/Profile/index.vue")

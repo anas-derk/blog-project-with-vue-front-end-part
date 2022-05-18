@@ -5,7 +5,10 @@
     <h3>معلومات التدوينة :</h3>
     <hr />
     <!-- Start Blog -->
-    <div class="blog p-3 border-style border-radius-3">
+    <div
+      class="blog p-3 border-style border-radius-3"
+      style="position: relative"
+    >
       <!-- Start Author Img And Post Date Time Box -->
       <div
         class="author-img-and-post-date-time-box pb-3 d-flex align-items-center"
@@ -25,6 +28,20 @@
         ></i>
         <span>تاريخ النشر :</span>
       </div>
+      <!-- Start Deal Buttons With Blog Box -->
+      <div
+        class="deal-button-with-blog-box"
+        style="position: absolute; left: 15px; top: 15px"
+      >
+        <router-link
+          class="btn btn-secondary"
+          style="margin-left: 15px"
+          to="/blog/1/edit"
+          >تحرير</router-link
+        >
+        <router-link class="btn btn-danger" to="/blog/1/delete">حذف</router-link>
+      </div>
+      <!-- End Deal Buttons With Blog Box -->
       <!-- Start Blog Info -->
       <div class="blog-info">
         <h4 class="blog-title">عنوان التدوينة</h4>
@@ -120,7 +137,11 @@ export default {
       comment: "",
       waitMessage: "",
       errorMessage: "",
+      blogId: null,
     };
+  },
+  mounted() {
+    this.blogId = this.$route.params.id;
   },
   components: {
     Header,
