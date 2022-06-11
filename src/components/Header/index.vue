@@ -29,29 +29,6 @@
                 الصفحة الرئيسية
               </router-link>
             </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                دوراتي
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a class="dropdown-item" href="#">دورة بايثون</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">دورة جانغو</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">دورة نظام إدارة التعلم</a>
-                </li>
-              </ul>
-            </li>
             <li class="nav-item">
               <router-link
                 to="/sign-up"

@@ -15,7 +15,7 @@
         class="form-control mt-2 mb-3"
         id="user-name"
         autofocus
-        v-model.trim="newUserName"
+        v-model.trim="userName"
         required
       />
       <label for="#email">البريد الالكتروني الجديد *</label>
@@ -24,7 +24,7 @@
         placeholder="من فضلك أدخل البريد الالكتروني الجديد الذي تريده هنا"
         class="form-control mt-2 mb-3"
         id="email"
-        v-model.trim="newEmail"
+        v-model.trim="email"
         required
       />
       <label for="#first-name">الاسم الأول الجديد *</label>
@@ -33,7 +33,7 @@
         placeholder="من فضلك أدخل الاسم الأول الجديد الذي تريده هنا"
         class="form-control mt-2 mb-3"
         id="first-name"
-        v-model.trim="newFirstName"
+        v-model.trim="firstName"
         required
       />
       <label for="#middle-name">الاسم الثاني الجديد *</label>
@@ -42,7 +42,16 @@
         placeholder="من فضلك أدخل الاسم الثاني الجديد الذي تريده هنا"
         class="form-control mt-2 mb-3"
         id="middle-name"
-        v-model.trim="newMiddleName"
+        v-model.trim="middleName"
+        required
+      />
+      <label for="#password">كلمة السر الجديدة *</label>
+      <input
+        type="text"
+        placeholder="من فضلك أدخل كلمة السر الجديدة التي تريدها هنا"
+        class="form-control mt-2 mb-3"
+        id="password"
+        v-model.trim="password"
         required
       />
       <h6 class="mt-4 mb-3 text-danger fw-bold">
@@ -53,10 +62,10 @@
         {{ waitMessage }}
       </p>
       <p
-        class="alert alert-danger mt-3 text-center text-black"
-        v-if="errorMessage"
+        class="alert alert-success mt-3 text-center text-black"
+        v-if="successMessage"
       >
-        {{ errorMessage }}
+        {{ successMessage }}
       </p>
     </form>
   </div>
@@ -66,19 +75,20 @@
 <script>
 import Header from "@/components/Header/index.vue";
 import axios from "axios";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Signup",
   data() {
     return {
       userId: null,
-      newUserName: "",
-      newEmail: "",
-      newFirstName: "",
-      newMiddleName: "",
+      userName: "",
+      email: "",
+      firstName: "",
+      middleName: "",
+      password: "",
       waitMessage: "",
-      errorMessage: "",
+      successMessage: "",
     };
   },
   mounted() {
@@ -86,6 +96,20 @@ export default {
       this.redirectToPage("/login");
     } else {
       this.userId = this.userInfo._id;
+      // Get User Information
+      axios
+        .get(`${this.base_api_url}/users/user-info?userId=${this.userId}`)
+        .then((response) => {
+          let userInfo = response.data;
+          this.userName = userInfo.userName;
+          this.email = userInfo.email;
+          this.firstName = userInfo.firstName;
+          this.middleName = userInfo.middleName;
+          this.password = userInfo.password;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   },
   components: {
@@ -95,30 +119,32 @@ export default {
     ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
+    ...mapMutations(["setUserInfo"]),
     ...mapActions(["redirectToPage"]),
     editProfile() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم التعديل ...";
       axios
         .put(`${this.base_api_url}/users/${this.userId}`, {
-          userName: this.newUserName,
-          email: this.newEmail,
-          firstName: this.newFirstName,
-          middleName: this.newMiddleName,
+          userName: this.userName,
+          email: this.email,
+          firstName: this.firstName,
+          middleName: this.middleName,
+          password: this.password,
         })
-        .then(() => {
+        .then((response) => {
           setTimeout(() => {
-            // this.waitMessage = "";
-            // if (this.errorMessage) {
-            //   setTimeout(() => {
-            //     this.errorMessage = "";
-            //   }, 2000);
-            // } else
-            //   this.$router.push({
-            //     name: "الصفحة الرئيسية",
-            //     params: {
-            //       successMessage: `تهانينا ${this.userName} لقد تمت عملية التسجيل بنجاح ..`,
-            //     },
-            //   });
+            this.setUserInfo(response.data);
+            this.waitMessage = "";
+            this.successMessage = `تهانينا ${this.userName} لقد تمت عملية تعديل بياناتك الشخصية بنجاح ..`;
+            setTimeout(() => {
+              this.successMessage = "";
+              this.$router.push({
+                name: "الملف الشخصي",
+                params: {
+                  userId: this.userId,
+                },
+              });
+            }, 2000);
           }, 2000);
         })
         .catch((err) => {
