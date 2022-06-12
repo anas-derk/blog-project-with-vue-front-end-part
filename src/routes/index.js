@@ -19,7 +19,7 @@ const routes = [
     },
 
     {
-        name: "تفاصيل المدونة",
+        name: "تفاصيل التدوينة",
         path: "/blog/:id",
         component: () => import("../views/BlogInfo/index.vue")
     },

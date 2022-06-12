@@ -78,7 +78,7 @@ export default {
   methods: {
     addNewBlog() {
       axios
-        .post(`${this.base_api_url}/blogs/add-new-blog`, {
+        .post(`${this.base_api_url}/blogs`, {
           userId: this.userId,
           blogTitle: this.blogTitle,
           blogContent: this.blogContent,

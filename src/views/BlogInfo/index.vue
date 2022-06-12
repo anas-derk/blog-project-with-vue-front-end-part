@@ -26,27 +26,37 @@
             margin-left: 10px;
           "
         ></i>
-        <span>تاريخ النشر :</span>
+        <span>تاريخ النشر : {{ blogInfo.blogPostDate }}</span>
       </div>
       <!-- Start Deal Buttons With Blog Box -->
       <div
         class="deal-button-with-blog-box"
         style="position: absolute; left: 15px; top: 15px"
       >
-        <router-link
+        <button
           class="btn btn-secondary"
           style="margin-left: 15px"
-          to="/blog/1/edit"
-          >تحرير</router-link
+          @click="goToBlogEditPage()"
         >
-        <router-link class="btn btn-danger" to="/blog/1/delete">حذف</router-link>
+          تحرير
+        </button>
+        <button
+          class="btn btn-danger"
+          @click="goToBlogDeletePage()"
+          :to="{
+            name: 'حذف التدوينة',
+            params: { id: blogInfo._id },
+          }"
+        >
+          حذف
+        </button>
       </div>
       <!-- End Deal Buttons With Blog Box -->
       <!-- Start Blog Info -->
       <div class="blog-info">
-        <h4 class="blog-title">عنوان التدوينة</h4>
-        <p class="blog-content">محتوى التدوينة</p>
-        <h6>اسم الكاتب :</h6>
+        <h4 class="blog-title">{{ blogInfo.blogTitle }}</h4>
+        <p class="blog-content">{{ blogInfo.blogContent }}</p>
+        <h6 class="text-capitalize">اسم الكاتب : {{ blogInfo.blogWriterName }}</h6>
       </div>
       <!-- End Blog Info -->
     </div>
@@ -113,12 +123,6 @@
         <p class="alert alert-info mt-3 text-center" v-if="waitMessage">
           {{ waitMessage }}
         </p>
-        <p
-          class="alert alert-danger mt-3 text-center text-black"
-          v-if="errorMessage"
-        >
-          {{ errorMessage }}
-        </p>
       </form>
     </section>
     <!-- End Add New Comment Form Section -->
@@ -128,6 +132,9 @@
 
 <script>
 import Header from "@/components/Header";
+import { mapGetters } from "vuex";
+import axios from "axios";
+
 export default {
   name: "BlogDetails",
   data() {
@@ -135,18 +142,43 @@ export default {
       userName: "",
       email: "",
       comment: "",
+      blogInfo: {},
       waitMessage: "",
-      errorMessage: "",
       blogId: null,
     };
   },
   mounted() {
     this.blogId = this.$route.params.id;
+    // Call Get Blog Info Function
+    this.getBlogInfo(this.blogId);
   },
   components: {
     Header,
   },
+  computed: {
+    ...mapGetters(["base_api_url"]),
+  },
   methods: {
+    getBlogInfo(blogId) {
+      axios
+        .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+        .then((response) => {
+          this.blogInfo = response.data;
+        })
+        .catch((err) => console.log(err));
+    },
+    goToBlogEditPage() {
+      this.$router.push({
+        name: "تحرير التدوينة",
+        params: { id: this.blogInfo._id },
+      });
+    },
+    goToBlogDeletePage() {
+      this.$router.push({
+        name: "حذف التدوينة",
+        params: { id: this.blogInfo._id },
+      });
+    },
     addNewComment() {},
   },
 };

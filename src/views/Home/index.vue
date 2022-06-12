@@ -43,7 +43,7 @@
         <div class="blog-details">
           <h4 class="blog-title pb-3">
             <router-link :to="{
-              name: 'تفاصيل المدونة',
+              name: 'تفاصيل التدوينة',
               params: { id: blogInfo._id }
             }">{{ blogInfo.blogTitle }}</router-link>
           </h4>
