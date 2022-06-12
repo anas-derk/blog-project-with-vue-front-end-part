@@ -35,10 +35,10 @@
         {{ waitMessage }}
       </p>
       <p
-        class="alert alert-danger mt-3 text-center text-black"
-        v-if="errorMessage"
+        class="alert alert-success mt-3 text-center text-black"
+        v-if="successMessage"
       >
-        {{ errorMessage }}
+        {{ successMessage }}
       </p>
     </form>
     <!-- End Add New Comment Form Section -->
@@ -48,21 +48,56 @@
 
 <script>
 import Header from "@/components/Header";
+import { mapGetters } from "vuex";
+import axios from "axios";
+
 export default {
   name: "AddNewBlog",
   data() {
     return {
+      userId: "",
+      firstName: "",
       blogTitle: "",
       blogContent: "",
+      blogWriterName: "",
       waitMessage: "",
-      errorMessage: "",
+      successMessage: "",
     };
   },
   components: {
     Header,
   },
+  mounted() {
+    this.userId = this.userInfo._id;
+    this.firstName = this.userInfo.firstName;
+    this.blogWriterName = this.userInfo.userName;
+  },
+  computed: {
+    ...mapGetters(["userInfo", "base_api_url"]),
+  },
   methods: {
-    addNewBlog() {},
+    addNewBlog() {
+      axios
+        .post(`${this.base_api_url}/blogs/add-new-blog`, {
+          userId: this.userId,
+          blogTitle: this.blogTitle,
+          blogContent: this.blogContent,
+          blogWriterName: this.blogWriterName,
+        })
+        .then(() => {
+          this.waitMessage =
+            "الرجاء الانتظار ريثما يتم إنشاء المدونة الخاصة بك ....";
+          setTimeout(() => {
+            this.waitMessage = "";
+            this.successMessage =
+              `تهانينا ${this.firstName} لقد تمت عملية إضافة مدونتك بنجاح ...`;
+            setTimeout(() => {
+              this.$router.push("/");
+            }, 2000);
+          }, 2000);
+        })
+        .catch((err) => console.log(err));
+    },
   },
 };
 </script>
