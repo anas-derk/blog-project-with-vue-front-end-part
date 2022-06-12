@@ -7,8 +7,11 @@
     <p class="alert alert-success" v-if="successMessage">
       {{ successMessage }}
     </p>
+    <p class="alert alert-success" v-if="blogsList.length === 0">
+      {{ errorMessage }}
+    </p>
     <!-- Start All Blogs Section -->
-    <div class="all-blogs">
+    <div class="all-blogs" v-else>
       <!-- Start Blog -->
       <div
         class="blog p-3 border-style border-radius-3 mb-5"
@@ -69,7 +72,9 @@ export default {
   data() {
     return {
       successMessage: "",
+      errorMessage: "",
       blogsList: [],
+      blogListLength: null,
     };
   },
   computed: {
@@ -84,7 +89,11 @@ export default {
     axios
       .get(`${this.base_api_url}/blogs/all-blogs`)
       .then((response) => {
-        this.blogsList = response.data;
+        let blogsList = response.data;
+        this.blogListLength = blogsList.length;
+        if(this.blogListLength === 0) {
+          this.errorMessage = "عذراً لا يوجد تدوينات حالياً ....";
+        } else this.blogsList = blogsList;
       })
       .catch((err) => console.log(err));
   },
