@@ -56,7 +56,9 @@
       <div class="blog-info">
         <h4 class="blog-title">{{ blogInfo.blogTitle }}</h4>
         <p class="blog-content">{{ blogInfo.blogContent }}</p>
-        <h6 class="text-capitalize">اسم الكاتب : {{ blogInfo.blogWriterName }}</h6>
+        <h6 class="text-capitalize">
+          اسم الكاتب : {{ blogInfo.blogWriterName }}
+        </h6>
       </div>
       <!-- End Blog Info -->
     </div>
@@ -65,18 +67,24 @@
     <section class="comments mt-4">
       <h3>التعليقات على التدوينة :</h3>
       <hr />
+      <p class="alert alert-danger mt-3 text-center" v-if="errorMessage">
+          {{ errorMessage }}
+        </p>
       <div
-        class="comment-details p-3"
+        class="comment-details p-3 mb-5"
         style="background-color: #eee; border: 2px dashed var(--two-color)"
+        v-for="commentInfo in commentList"
+        :key="commentInfo._id"
+        v-else
       >
         <h6
           class="pb-3 fw-bold"
           style="border-bottom: 1px solid var(--two-color)"
         >
-          <span>(محمد)</span>
-          <time> 2019-4-02 </time>
+          <span>كتب ( {{ commentInfo.userName }} ) هذا التعليق في تاريخ</span>
+          <time>&nbsp; {{ commentInfo.commentPostDate }}</time>
         </h6>
-        <p class="comment-content mb-1 mt-3">محتوى التعليق</p>
+        <p class="comment-content mb-1 mt-3">{{ commentInfo.commentContent }}</p>
       </div>
     </section>
     <!-- End Comments Section -->
@@ -97,6 +105,7 @@
           autofocus
           v-model.trim="userName"
           required
+          disabled
         />
         <label for="#email">البريد الالكتروني *</label>
         <input
@@ -123,6 +132,9 @@
         <p class="alert alert-info mt-3 text-center" v-if="waitMessage">
           {{ waitMessage }}
         </p>
+        <p class="alert alert-info mt-3 text-center" v-if="successMessage">
+          {{ successMessage }}
+        </p>
       </form>
     </section>
     <!-- End Add New Comment Form Section -->
@@ -144,19 +156,26 @@ export default {
       comment: "",
       blogInfo: {},
       waitMessage: "",
+      successMessage: "",
+      errorMessage: "",
       blogId: null,
+      commentList: [],
+      commentListLength: null,
     };
   },
   mounted() {
     this.blogId = this.$route.params.id;
+    this.userName = this.userInfo.userName;
     // Call Get Blog Info Function
-    this.getBlogInfo(this.blogId);
+    this.getCommentsByBlogId().then(() => {
+      this.getBlogInfo(this.blogId);
+    });
   },
   components: {
     Header,
   },
   computed: {
-    ...mapGetters(["base_api_url"]),
+    ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
     getBlogInfo(blogId) {
@@ -179,7 +198,45 @@ export default {
         params: { id: this.blogInfo._id },
       });
     },
-    addNewComment() {},
+    addNewComment() {
+      this.waitMessage = "الرجاء الانتظار ريثما يتم نشر التعليق ....";
+      axios
+        .post(`${this.base_api_url}/comments`, {
+          userName: this.userName,
+          email: this.email,
+          commentContent: this.comment,
+          blogId: this.blogId,
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.waitMessage = "";
+            this.successMessage = `تهانينا ${this.userName} لقد تمّ نشر تعليقك بنجاح ....`;
+            setTimeout(() => {
+              this.successMessage = "";
+              document.location.reload();
+            }, 2000);
+          }, 2000);
+        })
+        .catch((err) => console.log(err));
+    },
+    getCommentsByBlogId() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`${this.base_api_url}/comments?blogId=${this.blogId}`)
+          .then((response) => {
+            this.commentList = response.data;
+            this.commentListLength = this.commentList.length;
+            if(this.commentList == 0) {
+              this.errorMessage = "عذراً لا توجد تعليقات على هذه التدوينة لحد الآن ...";
+            }
+            resolve();
+          })
+          .catch((err) => {
+            console.log(err);
+            reject();
+          });
+      });
+    },
   },
 };
 </script>
