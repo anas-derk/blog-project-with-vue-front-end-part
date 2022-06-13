@@ -58,25 +58,33 @@
         pb-2
       "
       style="font-size: 25px"
+      v-if="userBlogListLength > 0"
     >
-      1
+      {{ userBlogListLength }}
+    </div>
+    <div
+      class="text-center fw-bold bg-secondary text-white pt-3 pb-3"
+      style="font-size: 18px"
+      v-else
+    >
+      {{ errorMessage }}
     </div>
     <!-- End Blogs Count Box -->
     <h3 class="mt-5">تدويناتي :</h3>
     <hr />
     <!-- Start My Blogs List -->
-    <ul class="my-blogs-list">
-      <li class="mb-3">
-        <a href="#">عنوان التدوينة</a>
-      </li>
-      <li class="mb-3">
-        <a href="#">عنوان التدوينة</a>
-      </li>
-      <li class="mb-3">
-        <a href="#">عنوان التدوينة</a>
-      </li>
-      <li>
-        <a href="#">عنوان التدوينة</a>
+    <ul
+      class="my-blogs-list"
+      style="list-style-type: square; list-style-position: inside"
+    >
+      <li
+        class="mb-3"
+        v-for="blog in userBlogsList"
+        :key="blog._id"
+        @click="goToBlogInfoPage(blog._id)"
+        style="cursor: pointer"
+      >
+        {{ blog.blogTitle }}
       </li>
     </ul>
     <!-- End My Blogs List -->
@@ -93,26 +101,51 @@
 <script>
 import Header from "@/components/Header";
 import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   name: "Profile",
   data() {
     return {
       userData: "",
+      userBlogsList: [],
+      userBlogListLength: null,
+      errorMessage: "",
     };
   },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo", "base_api_url"]),
   },
   mounted() {
     this.userData = this.userInfo;
     if (!this.userData) this.redirectToPage("/");
+    else this.getBlogsByUserId();
   },
   components: {
     Header,
   },
   methods: {
     ...mapActions(["redirectToPage"]),
+    getBlogsByUserId() {
+      axios
+        .get(
+          `${this.base_api_url}/blogs/user-blogs?userId=${this.userData._id}`
+        )
+        .then((response) => {
+          let userBlogsList = response.data;
+          this.userBlogListLength = userBlogsList.length;
+          if (this.userBlogListLength === 0) {
+            this.errorMessage = "عذراً لا يوجد تدوينات خاصة بك ....";
+          } else this.userBlogsList = userBlogsList;
+        })
+        .catch((err) => console.log(err));
+    },
+    goToBlogInfoPage(blogId) {
+      this.$router.push({
+        name: "تفاصيل التدوينة",
+        params: { id: blogId },
+      });
+    },
   },
 };
 </script>

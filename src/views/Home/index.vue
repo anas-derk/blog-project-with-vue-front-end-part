@@ -86,7 +86,14 @@ export default {
       this.successMessage = "";
     }, 6000);
     // Get All Blogs
-    axios
+    this.getAllBlogs();
+  },
+  components: {
+    Header,
+  },
+  methods: {
+    getAllBlogs() {
+      axios
       .get(`${this.base_api_url}/blogs/all-blogs`)
       .then((response) => {
         let blogsList = response.data;
@@ -96,9 +103,7 @@ export default {
         } else this.blogsList = blogsList;
       })
       .catch((err) => console.log(err));
-  },
-  components: {
-    Header,
-  },
+    }
+  }
 };
 </script>
