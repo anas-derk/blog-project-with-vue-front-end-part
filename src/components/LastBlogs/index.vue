@@ -41,7 +41,7 @@ export default {
   methods: {
     getLastFiveBlogs() {
       axios
-        .get(`${this.base_api_url}/blogs/all-blogs`)
+        .get(`${this.base_api_url}/blogs/last-five-blogs`)
         .then((response) => {
           this.blogsList = response.data;
         })
