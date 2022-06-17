@@ -8,6 +8,7 @@
     <div
       class="blog p-3 border-style border-radius-3"
       style="position: relative"
+      v-if="blogInfo"
     >
       <!-- Start Author Img And Post Date Time Box -->
       <div
@@ -62,14 +63,18 @@
       </div>
       <!-- End Blog Info -->
     </div>
+    <p class="alert alert-danger mt-3 text-center" v-else>
+      عذراً لا توجد تدوينة بهذا الاسم حالياً ( قد تمّ حذفها أو لم يتم نشرها
+      أبداً )
+    </p>
     <!-- End Blog -->
     <!-- Start Comments Section -->
-    <section class="comments mt-4">
+    <section class="comments mt-4" v-if="blogInfo">
       <h3>التعليقات على التدوينة :</h3>
       <hr />
-      <p class="alert alert-danger mt-3 text-center" v-if="errorMessage">
-          {{ errorMessage }}
-        </p>
+      <p class="alert alert-danger mt-3 text-center" v-if="noCommentsFoundError">
+        {{ noCommentsFoundError }}
+      </p>
       <div
         class="comment-details p-3 mb-5"
         style="background-color: #eee; border: 2px dashed var(--two-color)"
@@ -84,12 +89,14 @@
           <span>كتب ( {{ commentInfo.userName }} ) هذا التعليق في تاريخ</span>
           <time>&nbsp; {{ commentInfo.commentPostDate }}</time>
         </h6>
-        <p class="comment-content mb-1 mt-3">{{ commentInfo.commentContent }}</p>
+        <p class="comment-content mb-1 mt-3">
+          {{ commentInfo.commentContent }}
+        </p>
       </div>
     </section>
     <!-- End Comments Section -->
     <!-- Start Add New Comment Form Section -->
-    <section class="add-new-comment mt-4">
+    <section class="add-new-comment mt-4" v-if="blogInfo">
       <h3>إضافة تعليق جديد :</h3>
       <hr />
       <form
@@ -135,6 +142,9 @@
         <p class="alert alert-info mt-3 text-center" v-if="successMessage">
           {{ successMessage }}
         </p>
+        <p class="alert alert-danger mt-3 text-center" v-if="noBlogFoundError">
+          {{ noBlogFoundError }}
+        </p>
       </form>
     </section>
     <!-- End Add New Comment Form Section -->
@@ -157,18 +167,22 @@ export default {
       blogInfo: {},
       waitMessage: "",
       successMessage: "",
-      errorMessage: "",
+      noCommentsFoundError: "",
       blogId: null,
       commentList: [],
       commentListLength: null,
+      noBlogFoundError: "",
     };
   },
   mounted() {
     this.blogId = this.$route.params.id;
     this.userName = this.userInfo.userName;
-    // Call Get Blog Info Function
-    this.getCommentsByBlogId().then(() => {
-      this.getBlogInfo(this.blogId);
+    // Call Get Comment By Id Info Function
+    this.getBlogInfo(this.blogId).then(() => {
+      if (this.blogInfo) {
+        // Call Get Blog Info Function
+        this.getCommentsByBlogId(this.blogId);
+      }
     });
   },
   components: {
@@ -179,12 +193,15 @@ export default {
   },
   methods: {
     getBlogInfo(blogId) {
-      axios
-        .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
-        .then((response) => {
-          this.blogInfo = response.data;
-        })
-        .catch((err) => console.log(err));
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+          .then((response) => {
+            this.blogInfo = response.data;
+            resolve();
+          })
+          .catch((err) => reject(err));
+      });
     },
     goToBlogEditPage() {
       this.$router.push({
@@ -207,35 +224,38 @@ export default {
           commentContent: this.comment,
           blogId: this.blogId,
         })
-        .then(() => {
+        .then((response) => {
           setTimeout(() => {
             this.waitMessage = "";
-            this.successMessage = `تهانينا ${this.userName} لقد تمّ نشر تعليقك بنجاح ....`;
-            setTimeout(() => {
-              this.successMessage = "";
-              document.location.reload();
-            }, 2000);
+            if (response.data) {
+              this.noBlogFoundError = response.data;
+              setTimeout(() => {
+                this.noBlogFoundError = "";
+                document.location.reload();
+              }, 2000);
+            } else {
+              this.successMessage = `تهانينا ${this.userName} لقد تمّ نشر تعليقك بنجاح ....`;
+              setTimeout(() => {
+                this.successMessage = "";
+                document.location.reload();
+              }, 2000);
+            }
           }, 2000);
         })
         .catch((err) => console.log(err));
     },
     getCommentsByBlogId() {
-      return new Promise((resolve, reject) => {
-        axios
-          .get(`${this.base_api_url}/comments?blogId=${this.blogId}`)
-          .then((response) => {
-            this.commentList = response.data;
-            this.commentListLength = this.commentList.length;
-            if(this.commentList == 0) {
-              this.errorMessage = "عذراً لا توجد تعليقات على هذه التدوينة لحد الآن ...";
-            }
-            resolve();
-          })
-          .catch((err) => {
-            console.log(err);
-            reject();
-          });
-      });
+      axios
+        .get(`${this.base_api_url}/comments?blogId=${this.blogId}`)
+        .then((response) => {
+          this.commentList = response.data;
+          this.commentListLength = this.commentList.length;
+          if (this.commentList == 0) {
+            this.noCommentsFoundError =
+              "عذراً لا توجد تعليقات على هذه التدوينة لحد الآن ...";
+          }
+        })
+        .catch((err) => console.log(err));
     },
   },
 };
