@@ -76,6 +76,7 @@
     <ul
       class="my-blogs-list"
       style="list-style-type: square; list-style-position: inside"
+      v-if="userBlogListLength > 0"
     >
       <li
         class="mb-3"
@@ -88,11 +89,18 @@
       </li>
     </ul>
     <!-- End My Blogs List -->
-    <hr />
-    <div class="pagination-box text-center">
+    <hr v-if="userBlogListLength > 0" />
+    <div class="pagination-box text-center" v-if="userBlogListLength > 0">
       <button class="btn btn-secondary">التالي</button>
       <span style="margin: 0 20px">صفحة 1 من 10</span>
       <button class="btn btn-secondary">السابق</button>
+    </div>
+    <div
+      class="text-center fw-bold bg-secondary text-white pt-3 pb-3"
+      style="font-size: 18px"
+      v-if="userBlogListLength === 0"
+    >
+      {{ errorMessage }}
     </div>
   </div>
   <!-- End Profile -->

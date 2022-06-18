@@ -12,23 +12,40 @@
       >
         اضغط هنا لجلب آخر التعليقات ..
       </p>
-      <ul class="list-group list-group-flush" v-if="last_five_comments_list_Length > 0">
+      <ul
+        class="list-group list-group-flush"
+        v-if="last_five_comments_list_Length > 0"
+      >
         <li
           class="list-group-item"
           v-for="comment in last_five_comments_list"
           :key="comment._id"
-          style="cursor: pointer;"
-          @click="go_to_the_blog_page_which_is_related_to_the_comment(comment.blogId)"
+          style="cursor: pointer"
+          @click="
+            go_to_the_blog_page_which_is_related_to_the_comment(comment.blogId)
+          "
         >
           {{ comment.commentContent }}
         </li>
       </ul>
       <p
-        v-else-if="last_five_comments_list_Length === 0 && is_get_last_comments_btn_clicked"
+        v-else-if="
+          last_five_comments_list_Length === 0 &&
+          is_get_last_comments_btn_clicked
+        "
         class="text-center alert alert-danger pt-3 pb-3 m-0"
       >
         {{ errorMessage }}
       </p>
+      <router-link
+        to="/login"
+        class="text-center pb-3 pt-3"
+        aria-current="page"
+        exact-active-class
+        v-if="errorMessage && !userInfo"
+      >
+        تسجيل الدخول
+      </router-link>
     </div>
   </aside>
   <!-- End Last Comments -->
@@ -49,26 +66,33 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["base_api_url"]),
+    ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
     getLastFiveComments() {
       this.is_get_last_comments_btn_clicked = true;
-      axios
-        .get(`${this.base_api_url}/comments/last-five-comments`)
-        .then((response) => {
-          this.last_five_comments_list = response.data;
-          this.last_five_comments_list_Length = this.last_five_comments_list.length;
-          if (this.last_five_comments_list_Length === 0) {
-            this.errorMessage = "عذراً لا توجد تعليقات على التدوينات حالياً ...";
-          }
-        })
-        .catch((err) => console.log(err));
+      if (!this.userInfo) {
+        this.errorMessage =
+          "عذراً لا يمكن عرض آخر التعليقات لأنك لم تسجّل الدخول ، قم بتسجيل الدخول من هنا ....";
+      } else {
+        axios
+          .get(`${this.base_api_url}/comments/last-five-comments`)
+          .then((response) => {
+            this.last_five_comments_list = response.data;
+            this.last_five_comments_list_Length =
+              this.last_five_comments_list.length;
+            if (this.last_five_comments_list_Length === 0) {
+              this.errorMessage =
+                "عذراً لا توجد تعليقات على التدوينات حالياً ...";
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     },
     go_to_the_blog_page_which_is_related_to_the_comment(blogId) {
       document.location.hash = `/blog/${blogId}`;
       document.location.reload();
-    }
+    },
   },
 };
 </script>

@@ -12,7 +12,10 @@
       >
         اضغط هنا لجلب آخر التدوينات ..
       </p>
-      <ul class="list-group list-group-flush" v-if="last_five_blogs_list_Length > 0">
+      <ul
+        class="list-group list-group-flush"
+        v-if="last_five_blogs_list_Length > 0"
+      >
         <li
           class="list-group-item"
           v-for="blog in last_five_blogs_list"
@@ -24,11 +27,22 @@
         </li>
       </ul>
       <p
-        v-else-if="last_five_blogs_list_Length === 0 && is_get_last_blogs_btn_clicked"
+        v-else-if="
+          last_five_blogs_list_Length === 0 && is_get_last_blogs_btn_clicked
+        "
         class="text-center alert alert-danger pt-3 pb-3 m-0"
       >
         {{ errorMessage }}
       </p>
+      <router-link
+        to="/login"
+        class="text-center pb-3 pt-3"
+        aria-current="page"
+        exact-active-class
+        v-if="errorMessage && !userInfo"
+      >
+        تسجيل الدخول
+      </router-link>
     </div>
   </aside>
   <!-- End Last Blogs -->
@@ -49,21 +63,26 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["base_api_url"]),
+    ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
     getLastFiveBlogs() {
       this.is_get_last_blogs_btn_clicked = true;
-      axios
-        .get(`${this.base_api_url}/blogs/last-five-blogs`)
-        .then((response) => {
-          this.last_five_blogs_list = response.data;
-          this.last_five_blogs_list_Length = this.last_five_blogs_list.length;
-          if (this.last_five_blogs_list_Length === 0) {
-            this.errorMessage = "عذراً لا توجد تدوينات منشورة حالياً ...";
-          }
-        })
-        .catch((err) => console.log(err));
+      if (!this.userInfo) {
+        this.errorMessage =
+          "عذراً لا يمكن عرض آخر التدوينات لأنك لم تسجّل الدخول ، قم بتسجيل الدخول من هنا ....";
+      } else {
+        axios
+          .get(`${this.base_api_url}/blogs/last-five-blogs`)
+          .then((response) => {
+            this.last_five_blogs_list = response.data;
+            this.last_five_blogs_list_Length = this.last_five_blogs_list.length;
+            if (this.last_five_blogs_list_Length === 0) {
+              this.errorMessage = "عذراً لا توجد تدوينات منشورة حالياً ...";
+            }
+          })
+          .catch((err) => console.log(err));
+      }
     },
     goToBlogInfoPage(blogId) {
       document.location.hash = `/blog/${blogId}`;

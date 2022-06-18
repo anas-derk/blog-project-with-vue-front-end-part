@@ -33,6 +33,7 @@
       <div
         class="deal-button-with-blog-box"
         style="position: absolute; left: 15px; top: 15px"
+        v-if="userInfo._id === blogInfo.userId"
       >
         <button
           class="btn btn-secondary"
