@@ -7,7 +7,18 @@
     <p class="alert alert-success" v-if="successMessage">
       {{ successMessage }}
     </p>
-    <p class="alert alert-success" v-if="blogsList.length === 0">
+    <div v-if="noUserLoggedError">
+      <p class="alert alert-danger">
+        {{ noUserLoggedError }}
+      </p>
+      <router-link to="/login" class="btn btn-secondary"
+        >تسجيل الدخول</router-link
+      >
+    </div>
+    <p
+      class="alert alert-success"
+      v-else-if="blogsList.length === 0 && !noUserLoggedError"
+    >
       {{ errorMessage }}
     </p>
     <!-- Start All Blogs Section -->
@@ -45,13 +56,20 @@
         <!-- Start Blog Details -->
         <div class="blog-details">
           <h4 class="blog-title pb-3">
-            <router-link :to="{
-              name: 'تفاصيل التدوينة',
-              params: { id: blogInfo._id }
-            }">{{ blogInfo.blogTitle }}</router-link>
+            <router-link
+              :to="{
+                name: 'تفاصيل التدوينة',
+                params: { id: blogInfo._id },
+              }"
+              >{{ blogInfo.blogTitle }}</router-link
+            >
           </h4>
-          <p class="blog-content">محتوى التدوينة : انقر على الرابط أعلى هذا السطر تماماً .</p>
-          <h6 class="text-capitalize">كاتب التدوينة : {{ blogInfo.blogWriterName }}</h6>
+          <p class="blog-content">
+            محتوى التدوينة : انقر على الرابط أعلى هذا السطر تماماً .
+          </p>
+          <h6 class="text-capitalize">
+            كاتب التدوينة : {{ blogInfo.blogWriterName }}
+          </h6>
         </div>
         <!-- End Blog Details -->
       </div>
@@ -73,20 +91,25 @@ export default {
     return {
       successMessage: "",
       errorMessage: "",
+      noUserLoggedError: "",
       blogsList: [],
       blogListLength: null,
     };
   },
   computed: {
-    ...mapGetters(["base_api_url"]),
+    ...mapGetters(["base_api_url", "userInfo"]),
   },
   mounted() {
     this.successMessage = this.$route.params.successMessage;
     setTimeout(() => {
       this.successMessage = "";
     }, 6000);
-    // Get All Blogs
-    this.getAllBlogs();
+    // Get All Blogs If User Is Logged
+    if (this.userInfo) {
+      this.getAllBlogs();
+    } else
+      this.noUserLoggedError =
+        "عذراً لا يمكن عرض التدوينات لأنك لم تقم بتسجيل الدخول ، من فضلك قم بتسجيل الدخول بالضغط على الزر أدناه ...";
   },
   components: {
     Header,
@@ -94,16 +117,16 @@ export default {
   methods: {
     getAllBlogs() {
       axios
-      .get(`${this.base_api_url}/blogs/all-blogs`)
-      .then((response) => {
-        let blogsList = response.data;
-        this.blogListLength = blogsList.length;
-        if(this.blogListLength === 0) {
-          this.errorMessage = "عذراً لا يوجد تدوينات حالياً ....";
-        } else this.blogsList = blogsList;
-      })
-      .catch((err) => console.log(err));
-    }
-  }
+        .get(`${this.base_api_url}/blogs/all-blogs`)
+        .then((response) => {
+          let blogsList = response.data;
+          this.blogListLength = blogsList.length;
+          if (this.blogListLength === 0) {
+            this.errorMessage = "عذراً لا يوجد تدوينات حالياً ....";
+          } else this.blogsList = blogsList;
+        })
+        .catch((err) => console.log(err));
+    },
+  },
 };
 </script>
