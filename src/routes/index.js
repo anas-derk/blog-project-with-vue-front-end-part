@@ -55,6 +55,12 @@ const routes = [
     },
 
     {
+        name: "حذف الملف الشخصي",
+        path: "/users/profile/delete-profile/:userId",
+        component: () => import("../views/User/DeleteProfile/index.vue")
+    },
+
+    {
         path: "/:catchAll(.*)",
         component: () => import("../views/PageNotFound/index.vue")
     }

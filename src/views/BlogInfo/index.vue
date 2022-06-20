@@ -112,7 +112,6 @@
           id="user-name"
           autofocus
           v-model.trim="userName"
-          required
           disabled
         />
         <label for="#email">البريد الالكتروني *</label>
@@ -122,7 +121,7 @@
           class="form-control mt-2 mb-3"
           id="email"
           v-model.trim="email"
-          required
+          disabled
         />
         <label for="#comment">التعليق *</label>
         <textarea
@@ -178,6 +177,7 @@ export default {
   mounted() {
     this.blogId = this.$route.params.id;
     this.userName = this.userInfo.userName;
+    this.email = this.userInfo.email;
     // Call Get Comment By Id Info Function
     this.getBlogInfo(this.blogId).then(() => {
       if (this.blogInfo) {

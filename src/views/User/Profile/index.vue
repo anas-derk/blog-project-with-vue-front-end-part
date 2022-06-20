@@ -25,7 +25,13 @@
           <router-link
             :to="{ name: 'تحرير الملف الشخصي', userId: userData._id }"
             class="btn btn-danger"
+            style="margin-left: 20px;"
             >تحرير</router-link
+          >
+          <router-link
+            :to="{ name: 'حذف الملف الشخصي', userId: userData._id }"
+            class="btn btn-danger"
+            >حذف</router-link
           >
         </div>
         <!-- End Column -->
@@ -58,9 +64,9 @@
         pb-2
       "
       style="font-size: 25px"
-      v-if="userBlogListLength > 0"
+      v-if="userBlogsListLength > 0"
     >
-      {{ userBlogListLength }}
+      {{ userBlogsListLength }}
     </div>
     <div
       class="text-center fw-bold bg-secondary text-white pt-3 pb-3"
@@ -76,7 +82,7 @@
     <ul
       class="my-blogs-list"
       style="list-style-type: square; list-style-position: inside"
-      v-if="userBlogListLength > 0"
+      v-if="userBlogsListLength > 0"
     >
       <li
         class="mb-3"
@@ -89,8 +95,8 @@
       </li>
     </ul>
     <!-- End My Blogs List -->
-    <hr v-if="userBlogListLength > 0" />
-    <div class="pagination-box text-center" v-if="userBlogListLength > 0">
+    <hr v-if="userBlogsListLength > 0" />
+    <div class="pagination-box text-center" v-if="userBlogsListLength > 0">
       <button class="btn btn-secondary">التالي</button>
       <span style="margin: 0 20px">صفحة 1 من 10</span>
       <button class="btn btn-secondary">السابق</button>
@@ -98,7 +104,7 @@
     <div
       class="text-center fw-bold bg-secondary text-white pt-3 pb-3"
       style="font-size: 18px"
-      v-if="userBlogListLength === 0"
+      v-if="userBlogsListLength === 0"
     >
       {{ errorMessage }}
     </div>
@@ -117,7 +123,7 @@ export default {
     return {
       userData: "",
       userBlogsList: [],
-      userBlogListLength: null,
+      userBlogsListLength: null,
       errorMessage: "",
     };
   },
@@ -141,8 +147,8 @@ export default {
         )
         .then((response) => {
           let userBlogsList = response.data;
-          this.userBlogListLength = userBlogsList.length;
-          if (this.userBlogListLength === 0) {
+          this.userBlogsListLength = userBlogsList.length;
+          if (this.userBlogsListLength === 0) {
             this.errorMessage = "عذراً لا يوجد تدوينات خاصة بك ....";
           } else this.userBlogsList = userBlogsList;
         })
