@@ -5,39 +5,22 @@
     <h3>معلومات التدوينة :</h3>
     <hr />
     <!-- Start Blog -->
-    <div
-      class="blog p-3 border-style border-radius-3"
-      style="position: relative"
-      v-if="blogInfo"
-    >
+    <div class="blog p-3 border-style border-radius-3" v-if="blogInfo">
       <!-- Start Author Img And Post Date Time Box -->
       <div
         class="author-img-and-post-date-time-box pb-3 d-flex align-items-center"
       >
         <!-- <img src="" alt="صورة الناشر" class="rounded-circle border" /> -->
-        <i
-          class="fas fa-user rounded-circle border"
-          style="
-            display: inline-block;
-            width: 75px;
-            height: 75px;
-            text-align: center;
-            line-height: 75px;
-            font-size: 40px;
-            margin-left: 10px;
-          "
-        ></i>
+        <i class="fas fa-user rounded-circle border"></i>
         <span>تاريخ النشر : {{ blogInfo.blogPostDate }}</span>
       </div>
       <!-- Start Deal Buttons With Blog Box -->
       <div
         class="deal-button-with-blog-box"
-        style="position: absolute; left: 15px; top: 15px"
         v-if="userInfo._id === blogInfo.userId"
       >
         <button
-          class="btn btn-secondary"
-          style="margin-left: 15px"
+          class="btn btn-secondary go-to-blog-edit-page-btn"
           @click="goToBlogEditPage()"
         >
           تحرير
@@ -73,20 +56,20 @@
     <section class="comments mt-4" v-if="blogInfo">
       <h3>التعليقات على التدوينة :</h3>
       <hr />
-      <p class="alert alert-danger mt-3 text-center" v-if="noCommentsFoundError">
+      <p
+        class="alert alert-danger mt-3 text-center"
+        v-if="noCommentsFoundError"
+      >
         {{ noCommentsFoundError }}
       </p>
+      <!-- Start Comment Deatails Box -->
       <div
         class="comment-details p-3 mb-5"
-        style="background-color: #eee; border: 2px dashed var(--two-color)"
         v-for="commentInfo in commentList"
         :key="commentInfo._id"
         v-else
       >
-        <h6
-          class="pb-3 fw-bold"
-          style="border-bottom: 1px solid var(--two-color)"
-        >
+        <h6 class="pb-3 fw-bold">
           <span>كتب ( {{ commentInfo.userName }} ) هذا التعليق في تاريخ</span>
           <time>&nbsp; {{ commentInfo.commentPostDate }}</time>
         </h6>
@@ -94,6 +77,7 @@
           {{ commentInfo.commentContent }}
         </p>
       </div>
+      <!-- End Comment Deatails Box -->
     </section>
     <!-- End Comments Section -->
     <!-- Start Add New Comment Form Section -->
@@ -151,6 +135,43 @@
   </div>
   <!-- End Blog Details Page -->
 </template>
+
+<style lang="scss" scoped>
+.blog-details {
+  .blog {
+    position: relative;
+    .author-img-and-post-date-time-box {
+      i {
+        display: inline-block;
+        width: 75px;
+        height: 75px;
+        text-align: center;
+        line-height: 75px;
+        font-size: 40px;
+        margin-left: 10px;
+      }
+    }
+    .deal-button-with-blog-box {
+      position: absolute;
+      left: 15px;
+      top: 15px;
+      .go-to-blog-edit-page-btn {
+        margin-left: 15px;
+      }
+    }
+  }
+  .comments {
+    .comment-details {
+      background-color: #eee;
+      border: 2px dashed var(--two-color);
+      position: relative;
+      h6 {
+        border-bottom: 1px solid var(--two-color);
+      }
+    }
+  }
+}
+</style>
 
 <script>
 import Header from "@/components/Header";
