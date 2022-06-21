@@ -76,6 +76,18 @@
         <p class="comment-content mb-1 mt-3">
           {{ commentInfo.commentContent }}
         </p>
+        <!-- Start Comment Option Box -->
+        <div class="comment-option-box" v-if="commentInfo.email === email">
+          <i
+            class="fas fa-edit bg-danger text-center text-white"
+            @click="goToCommentEditPage(commentInfo._id)"
+          ></i>
+          <i
+            class="fas fa-edit bg-danger text-center text-white"
+            @click="goToDeleteCommentPage(commentInfo._id)"
+          ></i>
+        </div>
+        <!-- Start Comment Option Box -->
       </div>
       <!-- End Comment Deatails Box -->
     </section>
@@ -167,6 +179,22 @@
       position: relative;
       h6 {
         border-bottom: 1px solid var(--two-color);
+      }
+      .comment-option-box {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        i {
+          border-radius: 50%;
+          font-size: 15px;
+          width: 36px;
+          height: 36px;
+          line-height: 36px;
+          cursor: pointer;
+          &:first-child {
+            margin-left: 15px;
+          }
+        }
       }
     }
   }
@@ -278,6 +306,18 @@ export default {
           }
         })
         .catch((err) => console.log(err));
+    },
+    goToCommentEditPage(commentId) {
+      this.$router.push({
+        name: "تعديل التعليق الشخصي",
+        params: { commentId, blogId: this.blogId }
+      });
+    },
+    goToDeleteCommentPage(commentId) {
+      this.$router.push({
+        name: "حذف التعليق الشخصي",
+        params: { commentId, blogId: this.blogId }
+      });
     },
   },
 };

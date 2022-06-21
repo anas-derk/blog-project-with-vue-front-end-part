@@ -61,6 +61,18 @@ const routes = [
     },
 
     {
+        name: "تعديل التعليق الشخصي",
+        path: "/users/blog/:blogId/comments/edit-comment/:commentId",
+        component: () => import("../views/EditComment/index.vue")
+    },
+
+    {
+        name: "حذف التعليق الشخصي",
+        path: "/users/blog/:blogId/comments/delete-comment/:commentId",
+        component: () => import("../views/DeleteComment/index.vue")
+    },
+
+    {
         path: "/:catchAll(.*)",
         component: () => import("../views/PageNotFound/index.vue")
     }
