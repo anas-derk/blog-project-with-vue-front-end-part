@@ -1,5 +1,5 @@
 <template>
-  <!-- Start Profile -->
+  <!-- Start Profile Page -->
   <div class="profile">
     <Header />
     <h3>أهلاً بك {{ userData.userName }} في صفحة الملف الشخصي الخاصة بك :</h3>
@@ -10,22 +10,11 @@
       <div class="row">
         <!-- Start Column -->
         <div class="col-md-3 text-center">
-          <i
-            class="fas fa-user rounded-circle border mx-auto"
-            style="
-              display: block;
-              width: 75px;
-              height: 75px;
-              text-align: center;
-              line-height: 75px;
-              font-size: 40px;
-              margin-bottom: 20px;
-            "
-          ></i>
+          <i class="fas fa-user rounded-circle border mx-auto"></i>
           <router-link
             :to="{ name: 'تحرير الملف الشخصي', userId: userData._id }"
             class="btn btn-danger"
-            style="margin-left: 20px;"
+            style="margin-left: 20px"
             >تحرير</router-link
           >
           <router-link
@@ -63,7 +52,6 @@
         pt-2
         pb-2
       "
-      style="font-size: 25px"
       v-if="userBlogsListLength > 0"
     >
       {{ userBlogsListLength }}
@@ -79,11 +67,7 @@
     <h3 class="mt-5">تدويناتي :</h3>
     <hr />
     <!-- Start My Blogs List -->
-    <ul
-      class="my-blogs-list"
-      style="list-style-type: square; list-style-position: inside"
-      v-if="userBlogsListLength > 0"
-    >
+    <ul class="my-blogs-list" v-if="userBlogsListLength > 0">
       <li
         class="mb-3"
         v-for="blog in userBlogsList"
@@ -98,7 +82,7 @@
     <hr v-if="userBlogsListLength > 0" />
     <div class="pagination-box text-center" v-if="userBlogsListLength > 0">
       <button class="btn btn-secondary">التالي</button>
-      <span style="margin: 0 20px">صفحة 1 من 10</span>
+      <span>صفحة 1 من 10</span>
       <button class="btn btn-secondary">السابق</button>
     </div>
     <div
@@ -109,8 +93,36 @@
       {{ errorMessage }}
     </div>
   </div>
-  <!-- End Profile -->
+  <!-- End Profile Page -->
 </template>
+
+<style lang="scss" scoped>
+.profile {
+  .profile-info {
+    i {
+      display: block;
+      width: 75px;
+      height: 75px;
+      text-align: center;
+      line-height: 75px;
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+  }
+  .blogs-count-box {
+    font-size: 25px;
+  }
+  .my-blogs-list {
+    list-style-type: square;
+    list-style-position: inside;
+  }
+  .pagination-box{
+    span{
+      margin: 0 20px
+    }
+  }
+}
+</style>
 
 <script>
 import Header from "@/components/Header";

@@ -25,7 +25,6 @@
         id="blog-content"
         v-model.trim="blogContent"
         required
-        style="resize: none; height: 200px"
       ></textarea>
       <h6 class="mt-4 mb-3 text-danger fw-bold">
         ملاحظة : الإشارة * تعني أنّ الحقول مطلوبة .
@@ -45,6 +44,17 @@
   </div>
   <!-- End Add New Blog Page -->
 </template>
+
+<style lang="scss" scoped>
+.add-new-blog {
+  .add-new-blog-form {
+    textarea {
+      resize: none;
+      height: 200px;
+    }
+  }
+}
+</style>
 
 <script>
 import Header from "@/components/Header";
@@ -89,8 +99,7 @@ export default {
             "الرجاء الانتظار ريثما يتم إنشاء المدونة الخاصة بك ....";
           setTimeout(() => {
             this.waitMessage = "";
-            this.successMessage =
-              `تهانينا ${this.firstName} لقد تمت عملية إضافة مدونتك بنجاح ...`;
+            this.successMessage = `تهانينا ${this.firstName} لقد تمت عملية إضافة مدونتك بنجاح ...`;
             setTimeout(() => {
               this.$router.push("/");
             }, 2000);

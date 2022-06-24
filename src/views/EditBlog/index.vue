@@ -23,7 +23,6 @@
         id="new-blog-content"
         v-model.trim="blogContent"
         required
-        style="resize: none; height: 200px"
       ></textarea>
       <h6 class="mt-4 mb-3 text-danger fw-bold">
         ملاحظة : الإشارة * تعني أنّ الحقول مطلوبة .
@@ -40,6 +39,17 @@
   </div>
   <!-- End Edit Blog Page -->
 </template>
+
+<style lang="scss" scoped>
+.edit-blog {
+  .edit-blog-form {
+    textarea {
+      resize: none;
+      height: 200px;
+    }
+  }
+}
+</style>
 
 <script>
 import Header from "@/components/Header";

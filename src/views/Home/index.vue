@@ -39,18 +39,7 @@
           "
         >
           <!-- <img src="" alt="صورة الناشر" class="rounded-circle border" /> -->
-          <i
-            class="fas fa-user rounded-circle border"
-            style="
-              display: inline-block;
-              width: 75px;
-              height: 75px;
-              text-align: center;
-              line-height: 75px;
-              font-size: 40px;
-              margin-left: 10px;
-            "
-          ></i>
+          <i class="fas fa-user rounded-circle border"></i>
           <span>تاريخ النشر : {{ blogInfo.blogPostDate }}</span>
         </div>
         <!-- Start Blog Details -->
@@ -79,6 +68,29 @@
   </div>
   <!-- End Home -->
 </template>
+
+<style lang="scss" scoped>
+.home {
+  .all-blogs {
+    height: 479px;
+    overflow-y: auto;
+    .blog {
+      margin-left: 20px;
+      .author-img-and-post-date-time-box {
+        i {
+          display: inline-block;
+          width: 75px;
+          height: 75px;
+          text-align: center;
+          line-height: 75px;
+          font-size: 40px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+</style>
 
 <script>
 import Header from "@/components/Header";
