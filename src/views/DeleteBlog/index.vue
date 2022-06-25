@@ -75,7 +75,6 @@ export default {
       axios
         .delete(`${this.base_api_url}/blogs/${this.blogId}`)
         .then(() => {
-          this.waitMessage = "";
           setTimeout(() => {
             this.waitMessage = "";
             this.successMessage = `تهانينا ${this.userName} لقد تمت عملية حذف مدونتك الشخصية بنجاح ..`;

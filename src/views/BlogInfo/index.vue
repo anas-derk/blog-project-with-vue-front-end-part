@@ -83,7 +83,7 @@
             @click="goToCommentEditPage(commentInfo._id)"
           ></i>
           <i
-            class="fas fa-edit bg-danger text-center text-white"
+            class="fas fa-trash-alt bg-danger text-center text-white"
             @click="goToDeleteCommentPage(commentInfo._id)"
           ></i>
         </div>
@@ -248,6 +248,9 @@ export default {
           .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
           .then((response) => {
             this.blogInfo = response.data;
+            // Programming The Post Date Display Methology For Blog
+            let blogPostDate = new Date(this.blogInfo.blogPostDate);
+            this.blogInfo.blogPostDate = `${blogPostDate.toLocaleString()}`;
             resolve();
           })
           .catch((err) => reject(err));
@@ -300,9 +303,15 @@ export default {
         .then((response) => {
           this.commentList = response.data;
           this.commentListLength = this.commentList.length;
-          if (this.commentList == 0) {
+          if (this.commentListLength == 0) {
             this.noCommentsFoundError =
               "عذراً لا توجد تعليقات على هذه التدوينة لحد الآن ...";
+          } else {
+            // Programming The Post Date Display Methology For All Comments On Blogs
+            for(let i = 0; i < this.commentListLength; i++) {
+              let commentPostDate = new Date(this.commentList[i].commentPostDate);
+              this.commentList[i].commentPostDate = `${commentPostDate.toLocaleString()}`;
+            }
           }
         })
         .catch((err) => console.log(err));

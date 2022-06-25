@@ -135,7 +135,14 @@ export default {
           this.blogListLength = blogsList.length;
           if (this.blogListLength === 0) {
             this.errorMessage = "عذراً لا يوجد تدوينات حالياً ....";
-          } else this.blogsList = blogsList;
+          } else {
+            this.blogsList = blogsList;
+            // Programming The Post Date Display Methology For All Blogs
+            for(let i = 0; i < this.blogListLength; i++) {
+              let blogPostDate = new Date(this.blogsList[i].blogPostDate);
+              this.blogsList[i].blogPostDate = `${blogPostDate.toLocaleString()}`;
+            }
+          };
         })
         .catch((err) => console.log(err));
     },
