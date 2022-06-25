@@ -5,7 +5,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
       <!-- Start Container -->
       <div class="container">
-        <a class="navbar-brand" href="#">مدونة الكترونية</a>
+        <a class="navbar-brand" href="#" @click.prevent="reloadThePage()">مدونة الكترونية</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -27,16 +27,6 @@
                 exact-active-class
               >
                 الصفحة الرئيسية
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link
-                to="/sign-up"
-                class="nav-link"
-                aria-current="page"
-                exact-active-class
-              >
-                من أنا
               </router-link>
             </li>
           </ul>
@@ -162,6 +152,9 @@ export default {
       // redirect to home page
       this.redirectToPage("/login");
     },
+    reloadThePage() {
+      document.location.reload();
+    }
   },
 };
 </script>
