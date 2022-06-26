@@ -15,14 +15,24 @@
         required
       />
       <label for="#password">كلمة السر *</label>
-      <input
-        type="password"
-        placeholder="من فضلك أدخل كلمة سر حسابك هنا"
-        class="form-control mt-2 mb-3"
-        id="password"
-        v-model.trim="password"
-        required
-      />
+      <div class="password-field">
+        <input
+          :type="isDisplayPassword ? 'text' : 'password'"
+          placeholder="من فضلك أدخل كلمة سر حسابك هنا"
+          class="form-control mt-2 mb-3"
+          id="password"
+          v-model.trim="password"
+          required
+        />
+        <i
+          :class="[
+            'fa',
+            { 'fa-eye': !isDisplayPassword },
+            { 'fa-eye-slash': isDisplayPassword },
+          ]"
+          @click="isDisplayPassword = !isDisplayPassword"
+        ></i>
+      </div>
       <h6 class="mt-4 mb-3 text-danger fw-bold">
         ملاحظة : الإشارة * تعني أنّ الحقول مطلوبة .
       </h6>
@@ -46,6 +56,23 @@
   <!-- End Login -->
 </template>
 
+<style lang="scss" scoped>
+.login {
+  .login-form {
+    .password-field {
+      position: relative;
+      i {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+</style>
+
 <script>
 import Header from "@/components/Header/index.vue";
 import axios from "axios";
@@ -59,6 +86,7 @@ export default {
       password: "",
       waitMessage: "",
       errorMessage: "",
+      isDisplayPassword: false,
     };
   },
   components: {
@@ -66,7 +94,7 @@ export default {
   },
   mounted() {
     let userInfo = this.userInfo;
-    if(userInfo) {
+    if (userInfo) {
       this.redirectToPage("/");
     }
   },

@@ -46,23 +46,43 @@
         required
       />
       <label for="#password">كلمة السر *</label>
-      <input
-        type="password"
-        placeholder="من فضلك أدخل كلمة السر التي تريدها هنا"
-        class="form-control mt-2 mb-3"
-        id="password"
-        v-model.trim="password"
-        required
-      />
+      <div class="password-field">
+        <input
+          :type="isDisplayPassword ? 'text' : 'password'"
+          placeholder="من فضلك أدخل كلمة السر التي تريدها هنا"
+          class="form-control mt-2 mb-3"
+          id="password"
+          v-model.trim="password"
+          required
+        />
+        <i
+          :class="[
+            'fa',
+            { 'fa-eye': !isDisplayPassword },
+            { 'fa-eye-slash': isDisplayPassword },
+          ]"
+          @click="isDisplayPassword = !isDisplayPassword"
+        ></i>
+      </div>
       <label for="#confirmed-password"> تأكيد كلمة السر *</label>
-      <input
-        type="password"
-        placeholder="من فضلك أعد إدخال كلمة السر هنا"
-        class="form-control mt-2 mb-3"
-        id="confirmed-password"
-        v-model.trim="confirmedPassword"
-        required
-      />
+      <div class="password-field">
+        <input
+          :type="isDisplayConfirmedPassword ? 'text' : 'password'"
+          placeholder="من فضلك أعد إدخال كلمة السر هنا"
+          class="form-control mt-2 mb-3"
+          id="confirmed-password"
+          v-model.trim="confirmedPassword"
+          required
+        />
+        <i
+          :class="[
+            'fa',
+            { 'fa-eye': !isDisplayConfirmedPassword },
+            { 'fa-eye-slash': isDisplayConfirmedPassword },
+          ]"
+          @click="isDisplayConfirmedPassword = !isDisplayConfirmedPassword"
+        ></i>
+      </div>
       <h6 class="mt-4 mb-3 text-danger fw-bold">
         ملاحظة : الإشارة * تعني أنّ الحقول مطلوبة .
       </h6>
@@ -86,6 +106,23 @@
   <!-- End Signup -->
 </template>
 
+<style lang="scss" scoped>
+.sign-up {
+  .signup-form {
+    .password-field {
+      position: relative;
+      i {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+</style>
+
 <script>
 import Header from "@/components/Header/index.vue";
 import axios from "axios";
@@ -103,6 +140,8 @@ export default {
       confirmedPassword: "",
       waitMessage: "",
       errorMessage: "",
+      isDisplayPassword: false,
+      isDisplayConfirmedPassword: false,
     };
   },
   components: {
