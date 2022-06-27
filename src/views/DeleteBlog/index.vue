@@ -4,7 +4,7 @@
     <Header />
     <h3>حذف التدوينة :</h3>
     <hr />
-    <section class="delete-blog border-style p-3">
+    <section class="delete-blog border-style p-3" v-if="blogInfo">
       <h4 class="mb-4">هل أنت متأكد من حذف التدوينة ؟</h4>
       <!-- Start Delete Blog Form -->
       <form
@@ -31,28 +31,50 @@
         {{ successMessage }}
       </p>
     </section>
+    <p class="alert alert-danger mt-3 text-center" v-else>
+      {{ noBlogFoundError }}
+    </p>
   </div>
   <!-- End Delete Blog Page -->
 </template>
 
 <script>
 import Header from "@/components/Header";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
   name: "DeleteBlog",
   data() {
     return {
+      userId: null,
       blogId: null,
+      blogInfo: null,
       userName: "",
       waitMessage: "",
       successMessage: "",
+      noBlogFoundError: "",
     };
   },
   mounted() {
-    this.blogId = this.$route.params.id;
-    this.userName = this.userInfo.userName;
+    if (!this.userInfo) this.redirectToPage("/login");
+    else {
+      this.userId = this.$route.params.userId;
+      this.blogId = this.$route.params.id;
+      this.userName = this.userInfo.userName;
+      this.getBlogInfo(this.blogId).then((data) => {
+        if (typeof data === "string") {
+          this.noBlogFoundError = data;
+        } else {
+          this.blogInfo = data;
+          if (
+            this.blogInfo.userId !== this.userId ||
+            this.userId !== this.userInfo._id
+          )
+            this.redirectToPage("/");
+        }
+      });
+    }
   },
   components: {
     Header,
@@ -61,6 +83,17 @@ export default {
     ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
+    ...mapActions(["redirectToPage"]),
+    getBlogInfo(blogId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((err) => reject(err));
+      });
+    },
     backToBlogInfoPage() {
       this.$router.push({
         name: "تفاصيل التدوينة",
@@ -70,8 +103,7 @@ export default {
       });
     },
     deleteBlog() {
-      this.waitMessage =
-        "الرجاء الانتظار قليلاً ريثما يتم تنفيذ المهمة ...";
+      this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم تنفيذ المهمة ...";
       axios
         .delete(`${this.base_api_url}/blogs/${this.blogId}`)
         .then(() => {

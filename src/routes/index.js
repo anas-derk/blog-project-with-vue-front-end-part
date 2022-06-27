@@ -20,25 +20,25 @@ const routes = [
 
     {
         name: "تفاصيل التدوينة",
-        path: "/blog/:id",
+        path: "/user/:userId/blog/:id",
         component: () => import("../views/BlogInfo/index.vue")
     },
 
     {
         name: "إضافة تدوينة جديدة",
-        path: "/blog/add-new-blog",
+        path: "/user/:userId/blog/add-new-blog",
         component: () => import("../views/AddNewBlog/index.vue")
     },
 
     {
         name: "تحرير التدوينة",
-        path: "/blog/:id/edit",
+        path: "/user/:userId/blog/:id/edit",
         component: () => import("../views/EditBlog/index.vue")
     },
 
     {
         name: "حذف التدوينة",
-        path: "/blog/:id/delete",
+        path: "/user/:userId/blog/:id/delete",
         component: () => import("../views/DeleteBlog/index.vue")
     },
 
@@ -62,13 +62,13 @@ const routes = [
 
     {
         name: "تعديل التعليق الشخصي",
-        path: "/users/blog/:blogId/comments/edit-comment/:commentId",
+        path: "/users/:userId/blog/:blogId/comments/edit-comment/:commentId",
         component: () => import("../views/EditComment/index.vue")
     },
 
     {
         name: "حذف التعليق الشخصي",
-        path: "/users/blog/:blogId/comments/delete-comment/:commentId",
+        path: "/users/:userId/blog/:blogId/comments/delete-comment/:commentId",
         component: () => import("../views/DeleteComment/index.vue")
     },
 

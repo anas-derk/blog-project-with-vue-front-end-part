@@ -55,7 +55,10 @@
             </li>
             <li class="nav-item">
               <router-link
-                to="/blog/add-new-blog"
+                :to="{
+                  name: 'إضافة تدوينة جديدة',
+                  params: { userId: userData._id }
+                }"
                 class="nav-link"
                 aria-current="page"
                 exact-active-class

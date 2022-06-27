@@ -58,7 +58,7 @@
 
 <script>
 import Header from "@/components/Header";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
@@ -78,14 +78,18 @@ export default {
     Header,
   },
   mounted() {
-    this.userId = this.userInfo._id;
-    this.firstName = this.userInfo.firstName;
-    this.blogWriterName = this.userInfo.userName;
+    // Check if User Logged ( Protect Add New Blog Route )
+    if (this.userInfo) {
+      this.userId = this.userInfo._id;
+      this.firstName = this.userInfo.firstName;
+      this.blogWriterName = this.userInfo.userName;
+    } else this.redirectToPage("/login"); // Redirect To Login Page Because User Is Not Logged
   },
   computed: {
     ...mapGetters(["userInfo", "base_api_url"]),
   },
   methods: {
+    ...mapActions(["redirectToPage"]),
     addNewBlog() {
       axios
         .post(`${this.base_api_url}/blogs`, {

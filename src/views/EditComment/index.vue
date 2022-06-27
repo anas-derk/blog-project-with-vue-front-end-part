@@ -7,6 +7,7 @@
     <form
       class="edit-comment-form border-style p-3"
       @submit.prevent="editComment()"
+      v-if="commentInfo"
     >
       <label for="#comment-content">التعليق الجديد :</label>
       <input
@@ -32,6 +33,9 @@
         {{ successMessage }}
       </p>
     </form>
+    <p class="alert alert-danger mt-3 text-center" v-else>
+      {{ noCommentFoundError }}
+    </p>
   </div>
   <!-- End Edit Comment Page -->
 </template>
@@ -49,21 +53,42 @@ export default {
       blogId: null,
       commentId: null,
       userName: "",
+      commentInfo: null,
       commentContent: "",
       waitMessage: "",
       successMessage: "",
+      noCommentFoundError: "",
     };
   },
   mounted() {
-    if (!this.userInfo) {
-      this.redirectToPage("/login");
-    } else {
-      this.blogId = this.$route.params.blogId;
+    if (this.userInfo) {
       this.commentId = this.$route.params.commentId;
+      // Get Previos Comment Info
+      this.getCommentInfo(this.commentId).then((data) => {
+        // Check if Comment Is Exists
+        if (typeof data === "string") {
+          this.noCommentFoundError = data;
+        } else {
+          // Store Reponsed Data In Comment Info Object
+          this.commentInfo = data;
+          this.userId = this.$route.params.userId;
+          this.blogId = this.$route.params.blogId;
+          /* Start Check if This User Write This Blog */
+          if (
+            this.commentInfo.userId !== this.userId ||
+            this.userId !== this.userInfo._id ||
+            this.blogId !== this.commentInfo.blogId
+          )
+            // Auto Redirect To Home Page because This User Don't Write This Comment
+            this.redirectToPage("/");
+          else {
+            this.commentContent = this.commentInfo.commentContent;
+          }
+          /* End Check if This User Write This Comment */
+        }
+      });
       this.userName = this.userInfo.userName;
-      // Get Comment Info
-      this.getCommentInfo();
-    }
+    } else this.redirectToPage("/login");
   },
   components: {
     Header,
@@ -73,15 +98,17 @@ export default {
   },
   methods: {
     ...mapActions(["redirectToPage"]),
-    getCommentInfo() {
-      axios
-        .get(`${this.base_api_url}/comments/user-comment?commentId=${this.commentId}`)
-        .then((response) => {
-          this.commentContent = response.data.commentContent;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    getCommentInfo(commentId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `${this.base_api_url}/comments/user-comment?commentId=${commentId}`
+          )
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((err) => reject(err));
+      });
     },
     editComment() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم التعديل ...";

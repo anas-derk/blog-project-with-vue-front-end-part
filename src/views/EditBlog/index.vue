@@ -5,7 +5,11 @@
     <h3>تعديل التدوينة :</h3>
     <hr />
     <!-- Start Edit Blog Form Section -->
-    <form class="edit-blog-form border-style p-3" @submit.prevent="editBlog()">
+    <form
+      class="edit-blog-form border-style p-3"
+      @submit.prevent="editBlog()"
+      v-if="blogInfo"
+    >
       <label for="#blog-title">عنوان التدوينة الجديد *</label>
       <input
         type="text"
@@ -36,6 +40,9 @@
       </p>
     </form>
     <!-- End Edit Blog Form Section -->
+    <p class="alert alert-danger mt-3 text-center" v-else>
+      {{ noBlogFoundError }}
+    </p>
   </div>
   <!-- End Edit Blog Page -->
 </template>
@@ -53,26 +60,52 @@
 
 <script>
 import Header from "@/components/Header";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
   name: "EditBlog",
   data() {
     return {
+      userId: null,
       blogId: null,
+      blogInfo: null,
       blogTitle: "",
       blogContent: "",
       userName: "",
       waitMessage: "",
       successMessage: "",
+      noBlogFoundError: "",
     };
   },
   mounted() {
-    this.blogId = this.$route.params.id;
-    // Get Previos Blog Info
-    this.getBlogInfo(this.blogId);
-    this.userName = this.userInfo.userName;
+    if (this.userInfo) {
+      this.blogId = this.$route.params.id;
+      // Get Previos Blog Info
+      this.getBlogInfo(this.blogId).then((data) => {
+        // Check if Blog Is Exists
+        if (typeof data === "string") {
+          this.noBlogFoundError = data;
+        } else {
+          // Store Reponsed Data In Blog Info Object
+          this.blogInfo = data;
+          this.userId = this.$route.params.userId;
+          /* Start Check if This User Write This Blog */
+          if (
+            this.blogInfo.userId !== this.userId ||
+            this.userId !== this.userInfo._id
+          )
+          // Auto Redirect To Home Page because This User Don't Write This Blog
+            this.redirectToPage("/");
+          else {
+            this.blogTitle = this.blogInfo.blogTitle;
+            this.blogContent = this.blogInfo.blogContent;
+          }
+          /* End Check if This User Write This Blog */
+        }
+      });
+      this.userName = this.userInfo.userName;
+    } else this.redirectToPage("/login");
   },
   components: {
     Header,
@@ -81,15 +114,16 @@ export default {
     ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
+    ...mapActions(["redirectToPage"]),
     getBlogInfo(blogId) {
-      axios
-        .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
-        .then((response) => {
-          let blogInfo = response.data;
-          this.blogTitle = blogInfo.blogTitle;
-          this.blogContent = blogInfo.blogContent;
-        })
-        .catch((err) => console.log(err));
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((err) => reject(err));
+      });
     },
     editBlog() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم التعديل ...";

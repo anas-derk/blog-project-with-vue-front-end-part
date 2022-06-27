@@ -4,7 +4,7 @@
     <Header />
     <h3>حذف التعليق :</h3>
     <hr />
-    <section class="delete-comment border-style p-3">
+    <section class="delete-comment border-style p-3" v-if="commentInfo">
       <h4 class="mb-4">هل أنت متأكد من حذف التعليق ؟</h4>
       <!-- Start Delete Comment Form -->
       <form
@@ -31,13 +31,16 @@
         {{ successMessage }}
       </p>
     </section>
+    <p class="alert alert-danger mt-3 text-center" v-else>
+      {{ noCommentFoundError }}
+    </p>
   </div>
   <!-- End Delete Comment Page -->
 </template>
 
 <script>
 import Header from "@/components/Header";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
@@ -50,13 +53,30 @@ export default {
       userName: "",
       waitMessage: "",
       successMessage: "",
+      noCommentFoundError: "",
+      commentInfo: null,
     };
   },
   mounted() {
-    this.userId = this.$route.params.userId;
-    this.blogId = this.$route.params.blogId;
-    this.commentId = this.$route.params.commentId;
-    this.userName = this.userInfo.userName;
+    if (this.userInfo) {
+      this.commentId = this.$route.params.commentId;
+      this.getCommentInfo(this.commentId).then((data) => {
+        if (typeof data === "string") {
+          this.noCommentFoundError = data;
+        } else {
+          this.commentInfo = data;
+          this.userId = this.$route.params.userId;
+          this.blogId = this.$route.params.blogId;
+          this.userName = this.userInfo.userName;
+          if (
+            this.commentInfo.userId !== this.userId ||
+            this.userId !== this.userInfo._id ||
+            this.blogId !== this.commentInfo.blogId
+          )
+            this.redirectToPage("/");
+        }
+      });
+    } else this.redirectToPage("/login");
   },
   components: {
     Header,
@@ -65,6 +85,7 @@ export default {
     ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
+    ...mapActions(["redirectToPage"]),
     backToBlogInfoPage() {
       this.$router.push({
         name: "تفاصيل التدوينة",
@@ -92,6 +113,18 @@ export default {
           }, 2000);
         })
         .catch((err) => console.log(err));
+    },
+    getCommentInfo(commentId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `${this.base_api_url}/comments/user-comment?commentId=${commentId}`
+          )
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((err) => reject(err));
+      });
     },
   },
 };

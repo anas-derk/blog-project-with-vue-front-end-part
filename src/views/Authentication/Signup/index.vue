@@ -147,8 +147,11 @@ export default {
   components: {
     Header,
   },
+  mounted() {
+    if (this.userInfo) this.redirectToPage("/");
+  },
   computed: {
-    ...mapGetters(["base_api_url"]),
+    ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
     ...mapActions(["redirectToPage"]),

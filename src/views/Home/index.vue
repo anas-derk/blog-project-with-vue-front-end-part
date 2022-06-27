@@ -48,7 +48,7 @@
             <router-link
               :to="{
                 name: 'تفاصيل التدوينة',
-                params: { id: blogInfo._id },
+                params: { id: blogInfo._id, userId: userInfo._id },
               }"
               >{{ blogInfo.blogTitle }}</router-link
             >

@@ -5,7 +5,10 @@
     <h3>معلومات التدوينة :</h3>
     <hr />
     <!-- Start Blog -->
-    <div class="blog p-3 border-style border-radius-3" v-if="blogInfo">
+    <div
+      class="blog p-3 border-style border-radius-3"
+      v-if="blogInfo && userInfo"
+    >
       <!-- Start Author Img And Post Date Time Box -->
       <div
         class="author-img-and-post-date-time-box pb-3 d-flex align-items-center"
@@ -30,7 +33,7 @@
           @click="goToBlogDeletePage()"
           :to="{
             name: 'حذف التدوينة',
-            params: { id: blogInfo._id },
+            params: { id: blogInfo._id, userId: userInfo._id },
           }"
         >
           حذف
@@ -48,8 +51,7 @@
       <!-- End Blog Info -->
     </div>
     <p class="alert alert-danger mt-3 text-center" v-else>
-      عذراً لا توجد تدوينة بهذا الاسم حالياً ( قد تمّ حذفها أو لم يتم نشرها
-      أبداً )
+      {{ noBlogFoundError }}
     </p>
     <!-- End Blog -->
     <!-- Start Comments Section -->
@@ -203,7 +205,7 @@
 
 <script>
 import Header from "@/components/Header";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
@@ -213,7 +215,7 @@ export default {
       userName: "",
       email: "",
       comment: "",
-      blogInfo: {},
+      blogInfo: null,
       waitMessage: "",
       successMessage: "",
       noCommentsFoundError: "",
@@ -224,16 +226,19 @@ export default {
     };
   },
   mounted() {
-    this.blogId = this.$route.params.id;
-    this.userName = this.userInfo.userName;
-    this.email = this.userInfo.email;
-    // Call Get Comment By Id Info Function
-    this.getBlogInfo(this.blogId).then(() => {
-      if (this.blogInfo) {
-        // Call Get Blog Info Function
-        this.getCommentsByBlogId(this.blogId);
-      }
-    });
+    // Check if User Logged ( Protect Blog Info Route )
+    if (this.userInfo) {
+      this.blogId = this.$route.params.id;
+      this.userName = this.userInfo.userName;
+      this.email = this.userInfo.email;
+      // Call Get Comment By Id Info Function
+      this.getBlogInfo(this.blogId).then(() => {
+        if (this.blogInfo) {
+          // Call Get Blog Info Function
+          this.getCommentsByBlogId(this.blogId);
+        }
+      });
+    } else this.redirectToPage("/login"); // Redirect To Login Page Because User Is Not Logged
   },
   components: {
     Header,
@@ -242,15 +247,21 @@ export default {
     ...mapGetters(["base_api_url", "userInfo"]),
   },
   methods: {
+    ...mapActions(["redirectToPage"]),
     getBlogInfo(blogId) {
       return new Promise((resolve, reject) => {
         axios
           .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
           .then((response) => {
-            this.blogInfo = response.data;
-            // Programming The Post Date Display Methology For Blog
-            let blogPostDate = new Date(this.blogInfo.blogPostDate);
-            this.blogInfo.blogPostDate = `${blogPostDate.toLocaleString()}`;
+            let data = response.data;
+            if (typeof data === "string") {
+              this.noBlogFoundError = data;
+            } else {
+              this.blogInfo = data;
+              // Programming The Post Date Display Methology For Blog
+              let blogPostDate = new Date(this.blogInfo.blogPostDate);
+              this.blogInfo.blogPostDate = `${blogPostDate.toLocaleString()}`;
+            }
             resolve();
           })
           .catch((err) => reject(err));
@@ -276,6 +287,7 @@ export default {
           email: this.email,
           commentContent: this.comment,
           blogId: this.blogId,
+          userId: this.userInfo._id,
         })
         .then((response) => {
           setTimeout(() => {
@@ -308,9 +320,13 @@ export default {
               "عذراً لا توجد تعليقات على هذه التدوينة لحد الآن ...";
           } else {
             // Programming The Post Date Display Methology For All Comments On Blogs
-            for(let i = 0; i < this.commentListLength; i++) {
-              let commentPostDate = new Date(this.commentList[i].commentPostDate);
-              this.commentList[i].commentPostDate = `${commentPostDate.toLocaleString()}`;
+            for (let i = 0; i < this.commentListLength; i++) {
+              let commentPostDate = new Date(
+                this.commentList[i].commentPostDate
+              );
+              this.commentList[
+                i
+              ].commentPostDate = `${commentPostDate.toLocaleString()}`;
             }
           }
         })
@@ -319,13 +335,13 @@ export default {
     goToCommentEditPage(commentId) {
       this.$router.push({
         name: "تعديل التعليق الشخصي",
-        params: { commentId, blogId: this.blogId }
+        params: { commentId, blogId: this.blogId, userId: this.userInfo._id },
       });
     },
     goToDeleteCommentPage(commentId) {
       this.$router.push({
         name: "حذف التعليق الشخصي",
-        params: { commentId, blogId: this.blogId }
+        params: { commentId, blogId: this.blogId },
       });
     },
   },
