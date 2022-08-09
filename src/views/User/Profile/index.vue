@@ -9,7 +9,7 @@
       <!-- Start Grid System -->
       <div class="row">
         <!-- Start Column -->
-        <div class="col-md-3 text-center">
+        <div class="col-md-4 text-center">
           <i class="fas fa-user rounded-circle border mx-auto"></i>
           <router-link
             :to="{ name: 'تحرير الملف الشخصي', userId: userData._id }"
@@ -25,7 +25,7 @@
         </div>
         <!-- End Column -->
         <!-- Start Column -->
-        <div class="col-md-9">
+        <div class="col-md-8">
           <!-- Start Info Box -->
           <div class="info-box">
             <h4 class="mb-4">اسم المستخدم: {{ userData.firstName }}</h4>
@@ -107,6 +107,11 @@
       line-height: 75px;
       font-size: 40px;
       margin-bottom: 20px;
+    }
+    .info-box{
+      @media(max-width: 767px) {
+        padding-top: 25px;
+      }
     }
   }
   .blogs-count-box {

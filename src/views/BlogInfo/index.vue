@@ -15,7 +15,10 @@
       >
         <!-- <img src="" alt="صورة الناشر" class="rounded-circle border" /> -->
         <i class="fas fa-user rounded-circle border"></i>
-        <span>تاريخ النشر : {{ blogInfo.blogPostDate }}</span>
+        <span
+          >تاريخ النشر : <br />
+          {{ blogInfo.blogPostDate }}</span
+        >
       </div>
       <!-- Start Deal Buttons With Blog Box -->
       <div
@@ -75,11 +78,11 @@
           <span>كتب ( {{ commentInfo.userName }} ) هذا التعليق في تاريخ</span>
           <time>&nbsp; {{ commentInfo.commentPostDate }}</time>
         </h6>
-        <p class="comment-content mb-1 mt-3">
+        <p :class="['comment-content mt-3', {'mb-1': commentInfo.email !== email}]">
           {{ commentInfo.commentContent }}
         </p>
         <!-- Start Comment Option Box -->
-        <div class="comment-option-box" v-if="commentInfo.email === email">
+        <div class="comment-options-box" v-if="commentInfo.email === email">
           <i
             class="fas fa-edit bg-danger text-center text-white"
             @click="goToCommentEditPage(commentInfo._id)"
@@ -89,7 +92,7 @@
             @click="goToDeleteCommentPage(commentInfo._id)"
           ></i>
         </div>
-        <!-- Start Comment Option Box -->
+        <!-- Start Comment Options Box -->
       </div>
       <!-- End Comment Deatails Box -->
     </section>
@@ -163,12 +166,32 @@
         line-height: 75px;
         font-size: 40px;
         margin-left: 10px;
+        @media (max-width: 403px) {
+          width: 60px;
+          height: 60px;
+          line-height: 60px;
+          font-size: 30px;
+        }
+      }
+    }
+
+    .blog-info {
+      @media (max-width: 991px) {
+        h6 {
+          margin-bottom: 50px;
+        }
       }
     }
     .deal-button-with-blog-box {
       position: absolute;
       left: 15px;
       top: 15px;
+      @media (max-width: 991px) {
+        top: calc(100% - 48px);
+        left: 0;
+        width: 100%;
+        text-align: center;
+      }
       .go-to-blog-edit-page-btn {
         margin-left: 15px;
       }
@@ -182,10 +205,21 @@
       h6 {
         border-bottom: 1px solid var(--two-color);
       }
-      .comment-option-box {
+      .comment-content{
+        @media (max-width: 991px) {
+          margin-bottom: 40px;
+        }
+      }
+      .comment-options-box {
         position: absolute;
         top: 10px;
         left: 20px;
+        @media (max-width: 991px) {
+          top: calc(100% - 48px);
+          left: 0;
+          width: 100%;
+          text-align: center;
+        }
         i {
           border-radius: 50%;
           font-size: 15px;

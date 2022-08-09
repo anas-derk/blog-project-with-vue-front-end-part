@@ -5,12 +5,12 @@
       <!-- Start Grid System -->
       <div class="row">
         <!-- Start Column -->
-        <div class="col-md-8">
+        <div class="col-lg-8">
           <router-view />
         </div>
         <!-- End Column -->
         <!-- Start Column -->
-        <div class="col-md">
+        <div class="col-lg">
           <!-- Start Last Blogs And Last Comments Box -->
           <div class="last-blogs-comments-box">
             <LastBlogs />

@@ -22,7 +22,7 @@
       {{ errorMessage }}
     </p>
     <!-- Start All Blogs Section -->
-    <div class="all-blogs" v-else>
+    <div class="all-blogs" :style="blogListLength > 2 ? 'height: 479px; overflow-y: scroll': ''" v-else>
       <!-- Start Blog -->
       <div
         class="blog p-3 border-style border-radius-3 mb-5"
@@ -72,8 +72,6 @@
 <style lang="scss" scoped>
 .home {
   .all-blogs {
-    height: 479px;
-    overflow-y: auto;
     .blog {
       margin-left: 20px;
       .author-img-and-post-date-time-box {
