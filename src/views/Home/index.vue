@@ -127,7 +127,7 @@ export default {
   methods: {
     getAllBlogs() {
       axios
-        .get(`${this.base_api_url}/blogs/all-blogs`)
+        .get(`${this.base_api_url}/api/blogs/all-blogs`)
         .then((response) => {
           let blogsList = response.data;
           this.blogListLength = blogsList.length;

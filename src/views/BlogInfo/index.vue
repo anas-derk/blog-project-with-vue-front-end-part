@@ -285,7 +285,7 @@ export default {
     getBlogInfo(blogId) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+          .get(`${this.base_api_url}/api/blogs?blogId=${blogId}`)
           .then((response) => {
             let data = response.data;
             if (typeof data === "string") {
@@ -316,7 +316,7 @@ export default {
     addNewComment() {
       this.waitMessage = "الرجاء الانتظار ريثما يتم نشر التعليق ....";
       axios
-        .post(`${this.base_api_url}/comments`, {
+        .post(`${this.base_api_url}/api/comments`, {
           userName: this.userName,
           email: this.email,
           commentContent: this.comment,
@@ -345,7 +345,7 @@ export default {
     },
     getCommentsByBlogId() {
       axios
-        .get(`${this.base_api_url}/comments?blogId=${this.blogId}`)
+        .get(`${this.base_api_url}/api/comments?blogId=${this.blogId}`)
         .then((response) => {
           this.commentList = response.data;
           this.commentListLength = this.commentList.length;

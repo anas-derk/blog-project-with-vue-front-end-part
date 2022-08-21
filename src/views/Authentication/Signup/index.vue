@@ -166,7 +166,7 @@ export default {
         this.waitMessage =
           "الرجاء الانتظار قليلاً ريثما يتم التحقق وإنشاء الحساب ...";
         axios
-          .post(`${this.base_api_url}/users/sign-up`, {
+          .post(`${this.base_api_url}/api/users/sign-up`, {
             userName: this.userName,
             email: this.email,
             firstName: this.firstName,

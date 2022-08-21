@@ -125,7 +125,7 @@ export default {
     deleteProfile() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم حذف الحساب ...";
       axios
-        .delete(`${this.base_api_url}/users/${this.userId}`, {
+        .delete(`${this.base_api_url}/api/users/${this.userId}`, {
           data: {
             email: this.userInfo.email,
             password: this.password,

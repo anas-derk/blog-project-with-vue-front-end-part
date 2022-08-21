@@ -87,7 +87,7 @@ export default {
     getBlogInfo(blogId) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+          .get(`${this.base_api_url}/api/blogs?blogId=${blogId}`)
           .then((response) => {
             resolve(response.data);
           })
@@ -105,7 +105,7 @@ export default {
     deleteBlog() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم تنفيذ المهمة ...";
       axios
-        .delete(`${this.base_api_url}/blogs/${this.blogId}`)
+        .delete(`${this.base_api_url}/api/blogs/${this.blogId}`)
         .then(() => {
           setTimeout(() => {
             this.waitMessage = "";

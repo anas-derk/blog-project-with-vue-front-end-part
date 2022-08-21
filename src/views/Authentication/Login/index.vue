@@ -109,7 +109,7 @@ export default {
         "الرجاء الانتظار قليلاً ريثما يتم التحقق وتسجيل الدخول ...";
       axios
         .get(
-          `${this.base_api_url}/users/login?email=${this.email}&password=${this.password}`
+          `${this.base_api_url}/api/users/login?email=${this.email}&password=${this.password}`
         )
         .then((response) => {
           setTimeout(() => {

@@ -92,7 +92,7 @@ export default {
     ...mapActions(["redirectToPage"]),
     addNewBlog() {
       axios
-        .post(`${this.base_api_url}/blogs`, {
+        .post(`${this.base_api_url}/api/blogs`, {
           userId: this.userId,
           blogTitle: this.blogTitle,
           blogContent: this.blogContent,

@@ -102,7 +102,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `${this.base_api_url}/comments/user-comment?commentId=${commentId}`
+            `${this.base_api_url}/api/comments/user-comment?commentId=${commentId}`
           )
           .then((response) => {
             resolve(response.data);
@@ -113,7 +113,7 @@ export default {
     editComment() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم التعديل ...";
       axios
-        .put(`${this.base_api_url}/comments/${this.commentId}`, {
+        .put(`${this.base_api_url}/api/comments/${this.commentId}`, {
           commentContent: this.commentContent,
         })
         .then(() => {

@@ -118,7 +118,7 @@ export default {
     getBlogInfo(blogId) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${this.base_api_url}/blogs?blogId=${blogId}`)
+          .get(`${this.base_api_url}/api/blogs?blogId=${blogId}`)
           .then((response) => {
             resolve(response.data);
           })
@@ -128,7 +128,7 @@ export default {
     editBlog() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم التعديل ...";
       axios
-        .put(`${this.base_api_url}/blogs/${this.blogId}`, {
+        .put(`${this.base_api_url}/api/blogs/${this.blogId}`, {
           blogTitle: this.blogTitle,
           blogContent: this.blogContent,
         })

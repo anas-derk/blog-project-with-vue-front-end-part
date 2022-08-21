@@ -160,7 +160,7 @@ export default {
     getBlogsByUserId() {
       axios
         .get(
-          `${this.base_api_url}/blogs/user-blogs?userId=${this.userData._id}`
+          `${this.base_api_url}/api/blogs/user-blogs?userId=${this.userData._id}`
         )
         .then((response) => {
           let userBlogsList = response.data;

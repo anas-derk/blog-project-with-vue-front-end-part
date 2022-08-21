@@ -98,7 +98,7 @@ export default {
       this.userId = this.userInfo._id;
       // Get User Information
       axios
-        .get(`${this.base_api_url}/users/user-info?userId=${this.userId}`)
+        .get(`${this.base_api_url}/api/users/user-info?userId=${this.userId}`)
         .then((response) => {
           let userInfo = response.data;
           this.userName = userInfo.userName;
@@ -124,7 +124,7 @@ export default {
     editProfile() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم التعديل ...";
       axios
-        .put(`${this.base_api_url}/users/${this.userId}`, {
+        .put(`${this.base_api_url}/api/users/${this.userId}`, {
           userName: this.userName,
           email: this.email,
           firstName: this.firstName,

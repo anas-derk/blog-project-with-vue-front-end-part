@@ -97,7 +97,7 @@ export default {
     deleteComment() {
       this.waitMessage = "الرجاء الانتظار قليلاً ريثما يتم حذف التعليق ...";
       axios
-        .delete(`${this.base_api_url}/comments/${this.commentId}`)
+        .delete(`${this.base_api_url}/api/comments/${this.commentId}`)
         .then(() => {
           this.waitMessage = "";
           setTimeout(() => {
@@ -118,7 +118,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `${this.base_api_url}/comments/user-comment?commentId=${commentId}`
+            `${this.base_api_url}/api/comments/user-comment?commentId=${commentId}`
           )
           .then((response) => {
             resolve(response.data);
